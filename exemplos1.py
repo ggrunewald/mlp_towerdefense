@@ -1,3 +1,9 @@
+import math			#importa uma biblioteca
+from random import randrange	#importa soh a randint da random
+
+print math.sqrt(25)	#float
+print math.cos(1/2)
+
 #inicializar variaveis
 
 s = "string"		#string
@@ -177,13 +183,46 @@ for a in lista:
 
 lista.insert(1, 'p')
 
+#iteracao
+
 for a in lista:
 	if a == 'p':
 		print "P nao eh numero"
+		break		#o else do for soh executa se esse break nao for executado
 	else:
 		print a
-else:
-	print 'acabou a lista'	#esse else pertence ao for, e eh executado ao fim do for
+else:				#esse else pertence ao for, e eh executado ao fim do for
+	print 'acabou a lista'
 
-#continuar na 29
+
+frase = raw_input("Digite uma frase: ")
+apagar = raw_input("Digite a letra a apagar: ")
+novafrase = ""
+
+for letra in frase:
+	if letra == apagar.lower() or letra == apagar.upper():	#uppercase e lowercase OR AND
+		pass
+	else:
+		novafrase = novafrase + letra
+else:
+	print "Nova frase gerada com sucesso!"
+
+print novafrase
+
+n = 0
+
+while n < 10:
+	print n
+	n += 1
+
+print range(8)		#vetor com os numeros de 0 ateh 7
+
+print range(3,8)	#vetor de numeros de 3 ateh 7
+
+print range(3,8, 2)	#vetor de numeros de 3 ateh 7 incrementando de 2 em 2
+
+num = randrange(1, 60, 2)	#numero randomico entre 1 e 60 pulando de 2 em dois o primeiro e o ultimo parametros sao suprimiveis
+
+print num
+
 
