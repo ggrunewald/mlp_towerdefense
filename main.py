@@ -83,8 +83,8 @@ while True:										#loop principal
 	enemy1 = FastShip(0);
 	enemy2 = FastShip(1);
 
-	ask(surface, "Insert your name", enemy1.y, True)
-	ask(surface, "Insert your name", enemy2.y, True)
+	ask(surface, "Insert your name", str(enemy1.y), True)
+	ask(surface, "Insert your name", str(enemy2.y), True)
 
 	for event in pygame.event.get():			#se ocorrer um evento
 
