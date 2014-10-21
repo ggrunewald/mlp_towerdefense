@@ -5,3 +5,5 @@ EXIT 		= 4
 
 MAXX		= 1050
 MAXY		= 620
+
+RESUME		= 1

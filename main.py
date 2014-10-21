@@ -25,7 +25,7 @@ menu = Menu()
 menu.set_colors(WHITE, BLUE, BLACK)
 menu.set_fontsize(64)
 menu.init(['Earth Defense', 'Start','Name', 'Difficulty','Exit'], surface)
-menu.draw(1)
+menu.draw()
 
 menuContinue = True
 
@@ -69,6 +69,11 @@ while menuContinue:											#loop do menu
 			pygame.display.quit()
 			sys.exit()
 
+pauseMenu = Menu()
+pauseMenu.set_colors(WHITE, BLUE, BLACK)
+pauseMenu.set_fontsize(64)
+pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
+
 while True:										#loop principal
 	space = pygame.image.load("images/space.jpg")
 	surface.blit(space, (0, 0))
@@ -83,8 +88,31 @@ while True:										#loop principal
 
 	for event in pygame.event.get():			#se ocorrer um evento
 
-		if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):	#se for o evento de fechar a janela ou apertar ESC
+		if event.type == QUIT:	#se for o evento de fechar a janela ou apertar ESC
 			pygame.quit()						#fecha modulos do pygame
 			sys.exit()							#termina o programa
 
-		
+		if event.type == KEYDOWN:
+			if event.key == K_ESCAPE:
+				pauseMenu.draw()
+				paused = True
+				while paused:
+					for event in pygame.event.get():
+						if event.type == KEYDOWN:
+							if event.key == K_ESCAPE:
+								paused = False
+						#COMEcO
+							if event.key == K_UP or event.key == K_DOWN:
+								if pauseMenu.get_position() == RESUME:
+									pauseMenu.draw(1)
+								else:
+									pauseMenu.draw(-1)
+							elif event.key == K_RETURN:
+								if pauseMenu.get_position() == RESUME:
+									paused = False
+								else:
+									pygame.quit()
+									sys.exit()
+						#FIM
+					pauseMenu.draw()
+					pygame.display.update()

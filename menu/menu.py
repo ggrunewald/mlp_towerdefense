@@ -34,7 +34,7 @@ class Menu(object):
     background_color = (51, 51, 51)
     text_color = (255, 255, 153)
     selection_color = (153, 102, 255)
-    selection_position = 0
+    selection_position = 1
     paste_position = (0, 0)
     menu_width = 0
     menu_height = 0
