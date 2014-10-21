@@ -17,7 +17,7 @@ class Player(object):
 
 	@name.setter
 	def name(self, n):
-		if len(n) > 15:
+		if len(n) > 18:
 			return
 		elif len(n) == 0:
 			return
@@ -30,18 +30,22 @@ class Player(object):
 
 	@difficulty.setter
 	def difficulty(self, d):
-		if d != EASY and d != MEDIUM and d != HARD:
-			return
+		if d == 'easy':
+			self._difficulty = EASY
+		elif d == 'medium':
+			self._difficulty = MEDIUM
+		elif d == 'hard':
+			self._difficulty = HARD
 		else:
-			self._difficulty = d
+			return
 
 	@property
-	def difficulty(self):
-		return self._difficulty
+	def hp(self):
+		return self._hp
 
-	@difficulty.setter
-	def difficulty(self, d):
-		if 0 <= d <= 100:
-			self._difficulty = d
+	@hp.setter
+	def hp(self, p):
+		if 0 <= p <= 100:
+			self._hp = p
 		else:
 			return
