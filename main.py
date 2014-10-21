@@ -70,8 +70,14 @@ while menuContinue:											#loop do menu
 			sys.exit()
 
 while True:										#loop principal
+	space = pygame.image.load("images/space.jpg")
+	surface.blit(space, (0, 0))
 
-	surface.fill(BLACK)
+	earth = pygame.image.load("images/earth.png")
+	surface.blit(earth, (-180, 0))
+
+
+	#surface.fill(BLACK)
 	pygame.display.update()
 
 	enemy1 = Enemy(0);
