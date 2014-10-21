@@ -1,4 +1,6 @@
 from abc import ABCMeta, abstractmethod
+from random import randrange
+from defines.definitions import *
 
 #Classe abstrata Inimigos
 
@@ -9,22 +11,26 @@ class Ship(object):
 	_armor = 0
 	_damage = 0
 	_speed = 0
+	_x = 0
+	_y = randrange(MAXY)
 
 	def __init__(self, n = None, a = None, d = None, s = None):
 		if n != None:
-			self.num = n;
+			self.num = n
 		if a != None:
-			self.armor = a;
+			self.armor = a
 		if d != None:
-			self.damage = d;
+			self.damage = d
 		if s != None:
-			self.speed = s;
+			self.speed = s
 
     @abstractmethod
-    def attack(self): pass
+    def attack(self): 
+		pass
 
 	@abstractmethod
-    def move(self): pass
+    def move(self): 
+		pass
 
 	@property
 	def num(self):
@@ -70,6 +76,24 @@ class Ship(object):
 	def hp(self, h):
 		if h >= 0:
 			_hp = h;
+
+	@property
+	def x(self):
+		return self._x
+
+	@x.setter
+	def x(self, x):
+		if 0 <= x <= MAXX:
+			_x = x;
+
+	@property
+	def y(self):
+		return self._y
+
+	@y.setter
+	def y(self, y):
+		if 0 <= y <= MAXY:
+			_y = y;
 
 #Classes especificas Inimigas
 

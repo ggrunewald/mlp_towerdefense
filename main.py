@@ -5,6 +5,7 @@ from datetime import date			#importa funcoes relacionadas com tempo para registr
 from pygame.locals import *			#importa as constantes do pygame, entre elas o QUIT
 
 from classes.player import *		#importa modulo da classe jogador
+from classes.enemy import *		#importa modulo da classe jogador
 
 from defines.colors import *		#importa definicoes de cores
 from defines.difficulties import *	#importa definicoes de niveis de dificuldades
@@ -15,7 +16,7 @@ from menu.inputbox import *		#importa modulo de caixa de texto
 
 pygame.init()					#inicializa modulos importados
 
-surface = pygame.display.set_mode((1050,620))	#abre a janela e cria um objeto surface que eh retornado pra variavel surface
+surface = pygame.display.set_mode((MAXX, MAXY))	#abre a janela e cria um objeto surface que eh retornado pra variavel surface
 
 pygame.display.set_caption("Earth Defense")					#muda o nome na barra da janela
 
@@ -72,6 +73,12 @@ while True:										#loop principal
 
 	surface.fill(BLACK)
 	pygame.display.update()
+
+	enemy1 = Enemy(0);
+	enemy2 = Enemy(1);
+
+	ask(surface, "Insert your name", enemy1.y, True)
+	ask(surface, "Insert your name", enemy2.y, True)
 
 	for event in pygame.event.get():			#se ocorrer um evento
 

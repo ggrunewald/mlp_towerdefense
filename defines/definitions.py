@@ -2,3 +2,6 @@ START 		= 1
 NAME 		= 2
 DIFFICULTY  = 3
 EXIT 		= 4
+
+MAXX		= 1050
+MAXY		= 620
