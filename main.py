@@ -76,6 +76,8 @@ while True:										#loop principal
 	earth = pygame.image.load("images/earth.png")
 	surface.blit(earth, (-180, 0))
 
+	tower1 = pygame.image.load("images/tower.png")
+	tower2 = pygame.image.load("images/tower.png")
 
 	#surface.fill(BLACK)
 	pygame.display.update()
