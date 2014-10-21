@@ -24,12 +24,12 @@ class Ship(object):
 		if s != None:
 			self.speed = s
 
-    @abstractmethod
-    def attack(self): 
+	@abstractmethod
+	def attack(self):
 		pass
 
 	@abstractmethod
-    def move(self): 
+	def move(self): 
 		pass
 
 	@property
@@ -101,28 +101,28 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 	def __init__(self, n = None):
 		super(Enemy, self).__init__(n, 5, 7, 20)
 
-    def attack(self):
-        return "FastShip attack!"
+	def attack(self):
+		return "FastShip attack!"
 
 	def move(self):
-        return "FastShip moving!"
+		return "FastShip moving!"
 
 class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao forte e eh a mais lenta
 	def __init__(self, n = None):
 		super(Enemy, self).__init__(n, 20, 7, 5)
 
-    def attack(self):
-        return "WarShip attack!"
+	def attack(self):
+		return "WarShip attack!"
 
 	def move(self):
-        return "WarShip moving!"
+   		return "WarShip moving!"
 
 class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas nem tao resistentes
 	def __init__(self, n = None):
 		super(Enemy, self).__init__(n, 7, 15, 7)
-
-    def attack(self):
-        return "DestroyerShip attack!"
+	
+	def attack(self):
+   		return "DestroyerShip attack!"
 
 	def move(self):
-        return "DestroyerShip moving!"
+   		return "DestroyerShip moving!"
