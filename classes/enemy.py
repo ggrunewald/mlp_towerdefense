@@ -99,7 +99,7 @@ class Ship(object):
 
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas
 	def __init__(self, n = None):
-		super(Enemy, self).__init__(n, 5, 7, 20)
+		super(FastShip, self).__init__(n, 5, 7, 20)
 
 	def attack(self):
 		return "FastShip attack!"
@@ -109,7 +109,7 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 
 class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao forte e eh a mais lenta
 	def __init__(self, n = None):
-		super(Enemy, self).__init__(n, 20, 7, 5)
+		super(WarShip, self).__init__(n, 20, 7, 5)
 
 	def attack(self):
 		return "WarShip attack!"
@@ -119,7 +119,7 @@ class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao f
 
 class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas nem tao resistentes
 	def __init__(self, n = None):
-		super(Enemy, self).__init__(n, 7, 15, 7)
+		super(DestroyerShip, self).__init__(n, 7, 15, 7)
 	
 	def attack(self):
    		return "DestroyerShip attack!"

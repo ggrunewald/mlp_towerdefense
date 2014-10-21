@@ -80,8 +80,8 @@ while True:										#loop principal
 	#surface.fill(BLACK)
 	pygame.display.update()
 
-	enemy1 = Enemy(0);
-	enemy2 = Enemy(1);
+	enemy1 = FastShip(0);
+	enemy2 = FastShip(1);
 
 	ask(surface, "Insert your name", enemy1.y, True)
 	ask(surface, "Insert your name", enemy2.y, True)
