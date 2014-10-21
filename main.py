@@ -76,6 +76,8 @@ while True:										#loop principal
 	earth = pygame.image.load("images/earth.png")
 	surface.blit(earth, (-180, 0))
 
+	tower1 = pygame.image.load("images/tower.png")
+	tower2 = pygame.image.load("images/tower.png")
 
 	#surface.fill(BLACK)
 	pygame.display.update()
@@ -83,8 +85,8 @@ while True:										#loop principal
 	enemy1 = FastShip(0);
 	enemy2 = FastShip(1);
 
-	ask(surface, "Insert your name", enemy1.y, True)
-	ask(surface, "Insert your name", enemy2.y, True)
+	ask(surface, "Insert your name", str(enemy1.y), True)
+	ask(surface, "Insert your name", str(enemy2.y), True)
 
 	for event in pygame.event.get():			#se ocorrer um evento
 
