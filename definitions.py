@@ -1,0 +1,5 @@
+START 		= 1
+NAME 		= 2
+DIFFICULTY  = 3
+EXIT 		= 4
+

@@ -162,4 +162,3 @@ if __name__ == "__main__":
                 pygame.display.quit()
                 sys.exit()
         pygame.time.wait(8)
-        
