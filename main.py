@@ -74,15 +74,29 @@ pauseMenu.set_colors(WHITE, BLUE, BLACK)
 pauseMenu.set_fontsize(64)
 pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 
+
+space = pygame.image.load("images/space.jpg")
+earth = pygame.image.load("images/earth.png")
+tower = pygame.image.load("images/torre.png")
+bullet = pygame.image.load("images/bullet.png")
+
+mouseX = 500
+mouseY = 500
+bulletX = mouseX
+bulletY = mouseY
 while True:										#loop principal
-	space = pygame.image.load("images/space.jpg")
+
+	bulletX = bulletX+20
 	surface.blit(space, (0, 0))
-
-	earth = pygame.image.load("images/earth.png")
 	surface.blit(earth, (-180, 0))
+	surface.blit(tower, (mouseX-100, mouseY-100))
+	surface.blit(bullet, (bulletX, bulletY))
 
-	tower1 = pygame.image.load("images/tower.png")
-	tower2 = pygame.image.load("images/tower.png")
+
+	if(bulletX > MAXX):
+		bulletX = mouseX
+
+
 
 	pygame.display.update()
 
@@ -116,3 +130,11 @@ while True:										#loop principal
 						#FIM
 					pauseMenu.draw()
 					pygame.display.update()
+
+		if event.type == MOUSEBUTTONDOWN:
+			mouseX, mouseY = pygame.mouse.get_pos(); 
+			bulletX = mouseX
+			bulletY = mouseY
+			#print str(mouseX) + "   " + str(mouseY)
+			#surface.blit(tower, (mouseX, mouseY))
+			#pygame.display.update()
