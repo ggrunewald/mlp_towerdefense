@@ -1,17 +1,17 @@
 import pygame	#importa modulo pygame
 import sys		#importa modulo sys pra nao dar erro ao fechar a janela
 
-import player					#importa modulo do jogador
+import player						#importa modulo da classe jogador
 
-import inputbox					#TESTE
+from datetime import date			#importa funcoes relacionadas com tempo para registro de highscores
+from pygame.locals import *			#importa as constantes do pygame, entre elas o QUIT
 
-from datetime import date		#importa funcoes relacionadas com tempo para registro de highscores
-from pygame.locals import *		#importa as constantes do pygame, entre elas o QUIT
+import inputbox						#importa modulo de caixa de texto
 
-from colors import *			#importa arquivo com a definicao das cores que criei
-from difficulties import *		#importa definicoes de niveis de dificuldades
-from definitions import *		#importa outras definicoes
-from pygame_menu_key.menu import *				#importa o modulo de menu
+from colors import *				#importa definicoes de cores
+from difficulties import *			#importa definicoes de niveis de dificuldades
+from definitions import *			#importa outras definicoes
+from pygame_menu_key.menu import *	#importa o modulo de menu
 
 pygame.init()					#inicializa modulos importados
 
@@ -57,7 +57,8 @@ while menuContinue:											#loop do menu
 				elif menu.get_position() == NAME:
 					player.name = inputbox.ask(surface, "Insert your name", player.name, True)
 				elif menu.get_position() == DIFFICULTY:
-					player.difficulty = inputbox.ask(surface, "Type easy, medium or hard", "", False)
+					d = ['easy', 'medium', 'hard']
+					player.difficulty = inputbox.ask(surface, "Type easy, medium or hard", d[player.difficulty], False)
 				elif menu.get_position() == EXIT:
 					menuContinue = False
 					pygame.display.quit()
@@ -78,6 +79,8 @@ while True:										#loop principal
 
 	for event in pygame.event.get():			#se ocorrer um evento
 
-		if event.type == QUIT:					#se for o evento de fechar a janela
+		if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):	#se for o evento de fechar a janela ou apertar ESC
 			pygame.quit()						#fecha modulos do pygame
 			sys.exit()							#termina o programa
+
+		

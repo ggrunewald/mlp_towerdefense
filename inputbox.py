@@ -51,8 +51,11 @@ def ask(screen, question, atual=None, b=True):
 		if inkey == K_BACKSPACE:
 			current_string = current_string[0:-1]
 		elif inkey == K_RETURN:
-			screen.fill((0,0,0))
-			break
+			if not b and current_string not in ['easy', 'medium', 'hard']:
+				continue
+			else:
+				screen.fill((0,0,0))
+				break
 		elif inkey <= 127:
 			if (len(current_string) < 17 and b == True) or (len(current_string) < 6 and b == False):
 				current_string+=chr(inkey)
