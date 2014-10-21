@@ -1,7 +1,7 @@
-from difficulties import *	#importa definicoes de niveis de dificuldades
+from defines.difficulties import *	#importa definicoes de niveis de dificuldades
 
 class Player(object):
-	_name = "Anonimo"
+	_name = "anonimo"
 	_difficulty = EASY
 	_hp = 100
 
