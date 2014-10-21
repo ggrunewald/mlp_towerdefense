@@ -79,14 +79,7 @@ while True:										#loop principal
 	tower1 = pygame.image.load("images/tower.png")
 	tower2 = pygame.image.load("images/tower.png")
 
-	#surface.fill(BLACK)
 	pygame.display.update()
-
-	enemy1 = FastShip(0);
-	enemy2 = FastShip(1);
-
-	ask(surface, "Insert your name", str(enemy1.y), True)
-	ask(surface, "Insert your name", str(enemy2.y), True)
 
 	for event in pygame.event.get():			#se ocorrer um evento
 
