@@ -10,8 +10,8 @@ from defines.colors import *		#importa definicoes de cores
 from defines.difficulties import *	#importa definicoes de niveis de dificuldades
 from defines.definitions import *	#importa outras definicoes
 
-from menu_key.menu import *			#importa o modulo de menu
-from menu_key.inputbox import *		#importa modulo de caixa de texto
+from menu.menu import *			#importa o modulo de menu
+from menu.inputbox import *		#importa modulo de caixa de texto
 
 pygame.init()					#inicializa modulos importados
 
