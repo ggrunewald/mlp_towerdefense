@@ -1,5 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from random import randrange
+
 from defines.definitions import *
 
 #Classe abstrata Inimigos
@@ -24,14 +25,6 @@ class Ship(object):
 		if s != None:
 			self.speed = s
 
-    @abstractmethod
-    def attack(self): 
-		pass
-
-	@abstractmethod
-    def move(self): 
-		pass
-
 	@property
 	def num(self):
 		return self._num
@@ -39,7 +32,7 @@ class Ship(object):
 	@num.setter
 	def num(self, n):
 		if n >= 0:
-			_num = n;
+			_num = n
 
 	@property
 	def armor(self):
@@ -48,7 +41,7 @@ class Ship(object):
 	@armor.setter
 	def armor(self, a):
 		if a >= 0:
-			_armor = a;
+			_armor = a
 
 	@property
 	def damage(self):
@@ -57,7 +50,7 @@ class Ship(object):
 	@damage.setter
 	def damage(self, d):
 		if d >= 0:
-			_damage = d;
+			_damage = d
 
 	@property
 	def speed(self):
@@ -66,7 +59,7 @@ class Ship(object):
 	@speed.setter
 	def speed(self, s):
 		if s >= 0:
-			_speed = s;
+			_speed = s
 
 	@property
 	def hp(self):
@@ -75,7 +68,7 @@ class Ship(object):
 	@hp.setter
 	def hp(self, h):
 		if h >= 0:
-			_hp = h;
+			_hp = h
 
 	@property
 	def x(self):
@@ -93,7 +86,15 @@ class Ship(object):
 	@y.setter
 	def y(self, y):
 		if 0 <= y <= MAXY:
-			_y = y;
+			_y = y
+
+	@abstractmethod
+	def Attack(self):
+		pass
+
+	@abstractmethod
+	def Move(self):
+		pass
 
 #Classes especificas Inimigas
 
@@ -101,28 +102,28 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 	def __init__(self, n = None):
 		super(Enemy, self).__init__(n, 5, 7, 20)
 
-    def attack(self):
-        return "FastShip attack!"
+	def Attack(self):
+		return "FastShip attack!"
 
-	def move(self):
-        return "FastShip moving!"
+	def Move(self):
+		return "FastShip moving!"
 
 class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao forte e eh a mais lenta
 	def __init__(self, n = None):
 		super(Enemy, self).__init__(n, 20, 7, 5)
 
-    def attack(self):
-        return "WarShip attack!"
+	def Attack(self):
+		return "WarShip attack!"
 
-	def move(self):
-        return "WarShip moving!"
+	def Move(self):
+		return "WarShip moving!"
 
 class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas nem tao resistentes
 	def __init__(self, n = None):
 		super(Enemy, self).__init__(n, 7, 15, 7)
 
-    def attack(self):
-        return "DestroyerShip attack!"
+	def Attack(self):
+		return "DestroyerShip attack!"
 
-	def move(self):
-        return "DestroyerShip moving!"
+	def Move(self):
+		return "DestroyerShip moving!"
