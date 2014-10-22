@@ -7,3 +7,8 @@ MAXX		= 1050
 MAXY		= 620
 
 RESUME		= 1
+
+
+
+SPEED		= 25
+BULLET_LIMIT = 1000
