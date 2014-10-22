@@ -18,7 +18,7 @@ from menu.inputbox import *		#importa modulo de caixa de texto
 
 #TA AQUI A FUNCAO PRA ATUALIZAR AS TORRES E ATIRAR...NAO SABIA EXATAMENTE ONDE COLOCAR PRA FICAR MAIS ORGANIZADO
 def shoot_bullet(a_tower):
-	surface.blit(towers, (a_tower.get_posX()-50, a_tower.get_posY()-50))
+	surface.blit(towers, (a_tower.get_posX(), a_tower.get_posY()))
 	a_tower.shoot_bullet()
 	surface.blit(bullet, (a_tower.get_bullet_posX(), a_tower.get_bullet_posY()))
 
@@ -86,12 +86,18 @@ pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 #CARREGA AS IMAGENS
 space = pygame.image.load("images/space.jpg")
 earth = pygame.image.load("images/earth.png")
-towers = pygame.image.load("images/torre.png")
-bullet = pygame.image.load("images/laser.png")
+towers = pygame.image.load("images/tw.png")
+bullet = pygame.image.load("images/bl.png")
 
 #LISTAS PARA GUARDAR INIMIGOS/TORRES DO JOGO
 enemyList = []
 towerList = []   #Talvez aqui possamos aplicar aquelas funcoes de alta ordem para calcular a trajetoria de todos os projeteis
+
+matriz = [ [ 0 for j in range(20) ] for i in range(10) ]
+#MATRIZ GRID
+for i in range(10):
+	for j in range(20):
+		matriz[i][j] = 0
 
 while True:										#loop principal
 
@@ -136,8 +142,22 @@ while True:										#loop principal
 		if event.type == MOUSEBUTTONDOWN:
 			#Pega as coordenadas do mouse
 			mouseX, mouseY = pygame.mouse.get_pos()
+			print "X = " + str(mouseX) + "   " + "Y = " + str(mouseY)
 			#Cria nova torre na poiscao do mouse
-			new_tower = tower(mouseX, mouseY)
-			#Adiciona torre na lista de torre
-			towerList.insert(0, new_tower)
+			#Se nao tem nenhuma torre nos vizinhos...
+			if towerList == []:
+				new_tower = tower(mouseX, mouseY)
+				#Adiciona torre na lista de torre
+				towerList.insert(0, new_tower)	
 
+			adiciona = 1
+			for elem in towerList:
+				if mouseX > elem.get_posX()+70 or mouseX < elem.get_posX() - 70 or mouseY > elem.get_posY()+70 or mouseY < elem.get_posY() - 70:
+					new_tower = tower(mouseX, mouseY)
+					adiciona = adiciona*1
+				else:
+					adiciona = 0
+
+			if(adiciona == 1):
+				#Adiciona torre na lista de torre
+				towerList.insert(0, new_tower)
