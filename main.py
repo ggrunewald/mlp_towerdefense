@@ -7,6 +7,7 @@ from pygame.locals import *			#importa as constantes do pygame, entre elas o QUI
 from classes.player import *		#importa modulo da classe jogador
 from classes.enemy import *		#importa modulo da classe jogador
 from classes.tower import *
+from classes.bullet import *
 
 from defines.colors import *		#importa definicoes de cores
 from defines.difficulties import *	#importa definicoes de niveis de dificuldades
@@ -16,11 +17,6 @@ from menu.menu import *			#importa o modulo de menu
 from menu.inputbox import *		#importa modulo de caixa de texto
 
 
-#TA AQUI A FUNCAO PRA ATUALIZAR AS TORRES E ATIRAR...NAO SABIA EXATAMENTE ONDE COLOCAR PRA FICAR MAIS ORGANIZADO
-def shoot_bullet(a_tower):
-	surface.blit(towers, (a_tower.get_posX(), a_tower.get_posY()))
-	a_tower.shoot_bullet()
-	surface.blit(bullet, (a_tower.get_bullet_posX(), a_tower.get_bullet_posY()))
 
 pygame.init()					#inicializa modulos importados
 
@@ -88,25 +84,53 @@ space = pygame.image.load("images/space.jpg")
 earth = pygame.image.load("images/earth.png")
 towers = pygame.image.load("images/tw.png")
 bullet = pygame.image.load("images/bl.png")
-
+et = pygame.image.load("images/et.png")
 #LISTAS PARA GUARDAR INIMIGOS/TORRES DO JOGO
 enemyList = []
-towerList = []   #Talvez aqui possamos aplicar aquelas funcoes de alta ordem para calcular a trajetoria de todos os projeteis
+towerList = []  
 
-matriz = [ [ 0 for j in range(20) ] for i in range(10) ]
-#MATRIZ GRID
-for i in range(10):
-	for j in range(20):
-		matriz[i][j] = 0
+eX = 700
+eY = 300
+deslocX = -3
+deslocY = -3
+
+#FUNCAO PARA IMPRIMIR AS TORRES CRIADAS E ATIRAR NO INIMIGO
+#NAO SABIA ONDE MELHOR BOTAR...BOTEI AQUI.
+def attack_enemy(a_tower):
+	surface.blit(towers, (a_tower.get_posX(), a_tower.get_posY()))
+	
+	a_tower.lock_target(eX, eY) #Detecta inimigo que gostaria de atirar
+	
+	surface.blit(bullet, a_tower.shoot_target()) #Atira no inimigo
+
 
 while True:										#loop principal
 
 	surface.blit(space, (0, 0))
 	surface.blit(earth, (-300, 20))
-	#APLICA FUNCAO MAP PARA TODAS AS LISTAS DO JOGO (nao sabia onde por a funcao e coloquei no topo)
-	map(shoot_bullet, towerList) #atualiza projetil para todas as torres
+
+	#######################
+	#APLICA AS FUNCOES MAP#
+	#######################
+	#Atualiza projetil para todas as torres
+	map(attack_enemy, towerList)
+	#Imprime inimigos
+	surface.blit(et, (eX, eY))
 
 	pygame.display.update()
+
+
+	#PARA FAZER O INIMIGO (simples por enquanto) SE MOVIMENTAR (Codigo comentado para teste com inigo parado)
+	#if(eX < 450):
+	#	eX = MAXX-10
+	#if(eY < 10):
+	#	deslocY = 10
+	#if(eY > MAXY-10):
+	#	deslocY = -10
+
+	#eX = eX +  deslocX
+	#eY = eY +  deslocY
+
 
 	for event in pygame.event.get():			#se ocorrer um evento
 
@@ -142,7 +166,6 @@ while True:										#loop principal
 		if event.type == MOUSEBUTTONDOWN:
 			#Pega as coordenadas do mouse
 			mouseX, mouseY = pygame.mouse.get_pos()
-			print "X = " + str(mouseX) + "   " + "Y = " + str(mouseY)
 			#Cria nova torre na poiscao do mouse
 			#Se nao tem nenhuma torre nos vizinhos...
 			if towerList == []:
@@ -152,7 +175,7 @@ while True:										#loop principal
 
 			adiciona = 1
 			for elem in towerList:
-				if mouseX > elem.get_posX()+70 or mouseX < elem.get_posX() - 70 or mouseY > elem.get_posY()+70 or mouseY < elem.get_posY() - 70:
+				if mouseX > elem.get_posX()+50 or mouseX < elem.get_posX() - 50 or mouseY > elem.get_posY()+ 50 or mouseY < elem.get_posY() - 50:
 					new_tower = tower(mouseX, mouseY)
 					adiciona = adiciona*1
 				else:

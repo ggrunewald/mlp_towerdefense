@@ -1,19 +1,22 @@
+from random import randrange
+
 from defines.definitions import *
+from classes.bullet import *
 
 class tower(object):
 	_x = 0
 	_y = 0
-	_shot_x = 0
-	_shot_y = 0
+	_shooting = 0 #flag que indica se torre esta atirando
+	
+	bullet = None  #TALVEZ ESSE NONE POSSA DAR PROBLEA (OBSERVAR!)
+
+
+	#bullet = Bullet() #futuramente cada lista podera ter uma lista de projeteis caso atirar mais de uma vez seguida
 
 	def __init__(self, x = None, y = None):
-		if x != None:
-			self._x = x
-		if y != None:
+		if x != None and y != None:
+			self._x = x 
 			self._y = y
-
-		self._shot_x = self._x
-		self._shot_y = self._y
 
 	def get_posX(self):
 	    return self._x
@@ -27,26 +30,22 @@ class tower(object):
 	def set_posY(self, value):
 	    self._y = value
 
-	def get_bullet_posX(self):
-	    return self._shot_x
-	
-	def set_bullet_posX(self, value):
-	    self._shot_x = value
-	
-	def get_bullet_posY(self):
-	    return self._shot_y
-	
-	def set_bullet_posY(self, value):
-	    self._shot_y = value
-	
+	#Funcao tem por objetivo mirar no inimigo
+	#Futuramente pode receber o id do inimigo tambem para poder achar ele na lista de inimigos
+	#Nao pega novos inimigos enquanto esta atirando (mas podemos mudar isso criando mais um objeto Bullet e colocando numa lista,
+	#chamando alguma funcao de alta ordem para atirar e tal)
+	def lock_target(self, enemyX, enemyY):
+		if(self._shooting == FALSE): #So pega novo alvo se nao tiver atirando
+			self.bullet = Bullet(self._x, self._y, enemyX, enemyY) #"mira" em um novo alvo (na pratica eh calcular a reta ate ele para atirar)
+			self._shooting = TRUE
 
-	def reset_shot_bullet(self):
-		self._shot_x = self._x
-		#self._shot_y = _y
+    #Essa funcao basicamente so chama a funcao que fica atualizando a posicao do projetil da classe bullet
+	def shoot_target(self):
+		if(self._shooting == TRUE):
+			bullet_x, bullet_y, end = self.bullet.shoot_coordinates() #retorna coordenadas atualizadas do projetil
+	
+		if(end == TRUE): #fim da trajetoria do projetil
+			self._shooting = FALSE
 
-	def shoot_bullet(self):
-		self._shot_x = self._shot_x + SPEED
-		#self._shot_y = self._shot_y + SPEED
-
-		if(self._shot_x > BULLET_LIMIT):
-			self.reset_shot_bullet()
+		#Com essa informacao aqui da posicao do projetil, podemos utilizar para verificar se atingiu algum inimigo
+		return bullet_x, bullet_y 
