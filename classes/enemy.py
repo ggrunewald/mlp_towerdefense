@@ -8,7 +8,7 @@ from defines.definitions import *
 class Ship(object):
 	__metaclass__ = ABCMeta
 	_num = 0
-	_hp = 100
+	_hp = 5
 	_armor = 0
 	_damage = 0
 	_speed = 0
@@ -17,13 +17,13 @@ class Ship(object):
 
 	def __init__(self, n = None, a = None, d = None, s = None):
 		if n != None:
-			self.num = n
+			self._num = n
 		if a != None:
-			self.armor = a
+			self._armor = a
 		if d != None:
-			self.damage = d
+			self._damage = d
 		if s != None:
-			self.speed = s
+			self._speed = s
 
 	@abstractmethod
 	def Attack(self):
@@ -96,8 +96,22 @@ class Ship(object):
 		if 0 <= y <= MAXY:
 			_y = y
 
-#Classes especificas Inimigas
+	def set_x(self, x):
+		self._x = x
 
+	def set_y(self, y):
+		self._y = y
+
+	def get_x(self):
+		return self._x
+
+	def get_y(self):
+		return self._y
+
+	def get_id(self):
+		return self._num
+
+#Classes especificas Inimigas
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas
 	def __init__(self, n = None):
 		super(FastShip, self).__init__(n, 5, 7, 20)
@@ -109,6 +123,10 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 		return "FastShip moving!"
 
 class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao forte e eh a mais lenta
+	
+	deslocX = -2
+	deslocY = -2
+
 	def __init__(self, n = None):
 		super(WarShip, self).__init__(n, 20, 7, 5)
 
@@ -116,6 +134,16 @@ class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao f
 		return "WarShip attack!"
 
 	def Move(self):
+		if(self._x < 450):
+			self._x = MAXX-10
+		if(self._y < 10):
+			self.deslocY = 2
+		if(self._y > MAXY-10):
+			self.deslocY = -2
+
+		self._x = self._x +  self.deslocX
+		self._y = self._y +  self.deslocY
+		
 		return "WarShip moving!"
 
 

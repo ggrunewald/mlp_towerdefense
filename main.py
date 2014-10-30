@@ -79,31 +79,66 @@ pauseMenu.set_fontsize(64)
 pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 
 
-#CARREGA AS IMAGENS
+######################################
+#CARREGAMENTO DAS IMAGENS DO PROGRAMA#
+######################################
 space = pygame.image.load("images/space.jpg")
 earth = pygame.image.load("images/earth.png")
 towers = pygame.image.load("images/tw.png")
 bullet = pygame.image.load("images/bl.png")
 et = pygame.image.load("images/et.png")
-#LISTAS PARA GUARDAR INIMIGOS/TORRES DO JOGO
-enemyList = []
-towerList = []  
 
-eX = 700
-eY = 300
-deslocX = -3
-deslocY = -3
 
+
+#################################################################################
+#                    ALGUMAS FUNCOES AUXILIARES PARA O PROGRAMA                 #  
+#################################################################################
 #FUNCAO PARA IMPRIMIR AS TORRES CRIADAS E ATIRAR NO INIMIGO
 #NAO SABIA ONDE MELHOR BOTAR...BOTEI AQUI.
 def attack_enemy(a_tower):
 	surface.blit(towers, (a_tower.get_posX(), a_tower.get_posY()))
 	
-	a_tower.lock_target(eX, eY) #Detecta inimigo que gostaria de atirar
+	if(not a_tower.is_shooting()):
+		#ESCOLHE UM INIMIGO (Temos que decidir como fazer a logica selecao do inimigo (se o mais perto, mais longe,...))
+		#Aqui coloquei todos atacam o primeiro inimigo so para testar as classes
+		a_tower.lock_target(enemyList[0].get_x(),enemyList[0].get_y()) #Detecta inimigo que gostaria de atirar
 	
 	surface.blit(bullet, a_tower.shoot_target()) #Atira no inimigo
 
+def move_enemy(a_enemy):
+	surface.blit(et, (a_enemy.get_x(), a_enemy.get_y()))
+	a_enemy.Move()
 
+
+def insert_enemies():
+	enemy1 = WarShip(1)
+	enemy2 = WarShip(2)
+
+	enemy1.set_x(1000)
+	enemy1.set_y(0)
+	
+	enemy2.set_x(800)
+	enemy2.set_y(400)
+
+	enemyList.insert(0, enemy1)
+	enemyList.insert(0, enemy2)
+
+
+####################################################################################
+
+###############################################
+#INICIALIZA ESTRUTURAS NECESSARIAS PARA O JOGO#
+###############################################
+enemyList = []
+towerList = []  
+
+#Funcao para teste (ou nao)
+insert_enemies()
+
+
+#############################
+#MENU PRINCIPAL DA INTERFACE#
+#############################
 while True:										#loop principal
 
 	surface.blit(space, (0, 0))
@@ -115,21 +150,10 @@ while True:										#loop principal
 	#Atualiza projetil para todas as torres
 	map(attack_enemy, towerList)
 	#Imprime inimigos
-	surface.blit(et, (eX, eY))
+	map(move_enemy, enemyList)
+
 
 	pygame.display.update()
-
-
-	#PARA FAZER O INIMIGO (simples por enquanto) SE MOVIMENTAR (Codigo comentado para teste com inigo parado)
-	#if(eX < 450):
-	#	eX = MAXX-10
-	#if(eY < 10):
-	#	deslocY = 10
-	#if(eY > MAXY-10):
-	#	deslocY = -10
-
-	#eX = eX +  deslocX
-	#eY = eY +  deslocY
 
 
 	for event in pygame.event.get():			#se ocorrer um evento
