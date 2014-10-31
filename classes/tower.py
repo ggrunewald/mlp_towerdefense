@@ -7,11 +7,11 @@ class tower(object):
 	_x = 0
 	_y = 0
 	_shooting = False #flag que indica se torre esta atirando
-	
-	bullet = None  #TALVEZ ESSE NONE POSSA DAR PROBLEA (OBSERVAR!)
 
-
+	bullet = None 
 	#bullet = Bullet() #futuramente cada lista podera ter uma lista de projeteis caso atirar mais de uma vez seguida
+
+	locked_enemy = None
 
 	def __init__(self, x = None, y = None):
 		if x != None and y != None:
@@ -33,12 +33,19 @@ class tower(object):
 	def is_shooting(self):
 		return self._shooting
 
+	def stop_shoot(self):
+		self._shooting = False
+
+	def get_locked_enemy(self):
+		return self.locked_enemy
+
 	#Funcao tem por objetivo mirar no inimigo
 	#Futuramente pode receber o id do inimigo tambem para poder achar ele na lista de inimigos
 	#Nao pega novos inimigos enquanto esta atirando (mas podemos mudar isso criando mais um objeto Bullet e colocando numa lista,
 	#chamando alguma funcao de alta ordem para atirar e tal)
-	def lock_target(self, enemyX, enemyY):
+	def lock_target(self, enemy, enemyX, enemyY):
 		if(self._shooting == False): #So pega novo alvo se nao tiver atirando
+			self.locked_enemy = enemy
 			self.bullet = Bullet(self._x, self._y, enemyX, enemyY) #"mira" em um novo alvo (na pratica eh calcular a reta ate ele para atirar)
 			self._shooting = True
 
@@ -51,4 +58,5 @@ class tower(object):
 			self._shooting = False
 
 		#Com essa informacao aqui da posicao do projetil, podemos utilizar para verificar se atingiu algum inimigo
-		return bullet_x, bullet_y 
+		return bullet_x, bullet_y
+

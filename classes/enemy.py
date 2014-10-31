@@ -8,7 +8,7 @@ from defines.definitions import *
 class Ship(object):
 	__metaclass__ = ABCMeta
 	_num = 0
-	_hp = 5
+	_hp = 3
 	_armor = 0
 	_damage = 0
 	_speed = 0
@@ -110,6 +110,12 @@ class Ship(object):
 
 	def get_id(self):
 		return self._num
+
+	def hit(self, damage):
+		self._hp -= damage
+
+	def get_hp(self):
+		return self._hp
 
 #Classes especificas Inimigas
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas

@@ -98,12 +98,47 @@ et = pygame.image.load("images/et.png")
 def attack_enemy(a_tower):
 	surface.blit(towers, (a_tower.get_posX(), a_tower.get_posY()))
 	
-	if(not a_tower.is_shooting()):
-		#ESCOLHE UM INIMIGO (Temos que decidir como fazer a logica selecao do inimigo (se o mais perto, mais longe,...))
-		#Aqui coloquei todos atacam o primeiro inimigo so para testar as classes
-		a_tower.lock_target(enemyList[0].get_x(),enemyList[0].get_y()) #Detecta inimigo que gostaria de atirar
-	
-	surface.blit(bullet, a_tower.shoot_target()) #Atira no inimigo
+
+	#===============================================#
+	# Codigo para selecionar um inimigo para atirar #
+	#===============================================#
+	#Se tiver inimigos na lista de inimigos
+		#Escolher inimigo mais perto do planeta (estabalecer coordenada)
+			#verificar cada elemento da lista
+				#se tiver distancia x menor que os outros inimigos, faz o lock dele
+
+	#So tenta atacar inimigos se houver inimigos vivos!
+	if(len(enemyList) > 0):
+		if(not a_tower.is_shooting()):  #Nao faz a pesquisa tudo de novo caso torre estiver atualmente atirando (podemos mudar isso)
+			closest_enemy = None
+			shortest_distance = 999999 #infinito
+			for enemy in enemyList:
+				if (enemy.get_x() - PLANET_EARTH_POSX) < shortest_distance: #Se eh o mais proximo do planeta
+					shortest_distance = enemy.get_x() - PLANET_EARTH_POSX #Salva distancia
+					closest_enemy = enemy 	#Indica inimigo pre selecionado
+
+			a_tower.lock_target(closest_enemy, closest_enemy.get_x(),closest_enemy.get_y()) #Detecta inimigo que gostaria de atirar
+
+	    #=================================#
+		# Codigo para imprimir o projetil #
+		#=================================#
+		bullet_x, bullet_y = a_tower.shoot_target()
+		surface.blit(bullet, (bullet_x, bullet_y)) #Atira no inimigo
+
+		#============================================#
+		# Codigo para detectar se atingiu um inimigo #
+		#============================================#
+		if a_tower.get_locked_enemy() in enemyList:  #Se inimigo ainda existe no jogo
+			enemy_index = enemyList.index(a_tower.get_locked_enemy())
+			if(bullet_x >= enemyList[enemy_index].get_x()-DAMAGE_AREA and bullet_x <= enemyList[enemy_index].get_x()+DAMAGE_AREA):
+				if(bullet_y >= enemyList[enemy_index].get_y()-DAMAGE_AREA and bullet_y <= enemyList[enemy_index].get_y()+DAMAGE_AREA):
+					enemyList[enemy_index].hit(1)  #Tira 1 de HP (coloquei um valor pequeno na classe enemy para teste)
+					print "HIT!"
+					a_tower.stop_shoot() #Torre acertou o inimigo, por isso, mesmo projetil nao continua trajetoria na tela
+					if(enemyList[enemy_index].get_hp() <= 0):
+						#Morreu
+						enemyList.remove(enemyList[enemy_index])
+
 
 def move_enemy(a_enemy):
 	surface.blit(et, (a_enemy.get_x(), a_enemy.get_y()))
@@ -194,6 +229,7 @@ while True:										#loop principal
 			#Se nao tem nenhuma torre nos vizinhos...
 			if towerList == []:
 				new_tower = tower(mouseX, mouseY)
+				print str(mouseX) + "   " + str(mouseY)
 				#Adiciona torre na lista de torre
 				towerList.insert(0, new_tower)	
 
