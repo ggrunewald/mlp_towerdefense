@@ -15,7 +15,7 @@ from defines.definitions import *	#importa outras definicoes
 
 from menu.menu import *			#importa o modulo de menu
 from menu.inputbox import *		#importa modulo de caixa de texto
-
+import random
 
 
 pygame.init()					#inicializa modulos importados
@@ -84,9 +84,9 @@ pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 ######################################
 space = pygame.image.load("images/space.jpg")
 earth = pygame.image.load("images/earth.png")
-towers = pygame.image.load("images/tw.png")
-bullet = pygame.image.load("images/bl.png")
-et = pygame.image.load("images/et.png")
+towers = pygame.image.load("images/human.png")
+bullet = pygame.image.load("images/ball.png")
+et = pygame.image.load("images/ufo.png")
 
 
 
@@ -117,7 +117,7 @@ def attack_enemy(a_tower):
 					shortest_distance = enemy.get_x() - PLANET_EARTH_POSX #Salva distancia
 					closest_enemy = enemy 	#Indica inimigo pre selecionado
 
-			a_tower.lock_target(closest_enemy, closest_enemy.get_x(),closest_enemy.get_y()) #Detecta inimigo que gostaria de atirar
+			a_tower.lock_target(closest_enemy.get_x(),closest_enemy.get_y()) #Detecta inimigo que gostaria de atirar
 
 	    #=================================#
 		# Codigo para imprimir o projetil #
@@ -128,16 +128,15 @@ def attack_enemy(a_tower):
 		#============================================#
 		# Codigo para detectar se atingiu um inimigo #
 		#============================================#
-		if a_tower.get_locked_enemy() in enemyList:  #Se inimigo ainda existe no jogo
-			enemy_index = enemyList.index(a_tower.get_locked_enemy())
-			if(bullet_x >= enemyList[enemy_index].get_x()-DAMAGE_AREA and bullet_x <= enemyList[enemy_index].get_x()+DAMAGE_AREA):
-				if(bullet_y >= enemyList[enemy_index].get_y()-DAMAGE_AREA and bullet_y <= enemyList[enemy_index].get_y()+DAMAGE_AREA):
-					enemyList[enemy_index].hit(1)  #Tira 1 de HP (coloquei um valor pequeno na classe enemy para teste)
-					print "HIT!"
-					a_tower.stop_shoot() #Torre acertou o inimigo, por isso, mesmo projetil nao continua trajetoria na tela
-					if(enemyList[enemy_index].get_hp() <= 0):
-						#Morreu
-						enemyList.remove(enemyList[enemy_index])
+		for enemy in enemyList:
+			if(bullet_x >= enemy.get_x()-DAMAGE_AREA and bullet_x <= enemy.get_x()+DAMAGE_AREA):
+					if(bullet_y >= enemy.get_y()-DAMAGE_AREA and bullet_y <= enemy.get_y()+DAMAGE_AREA):
+						enemy.hit(1)  #Tira 1 de HP (coloquei um valor pequeno na classe enemy para teste)
+						print "HIT!"
+						a_tower.stop_shoot() #Torre acertou o inimigo, por isso, mesmo projetil nao continua trajetoria na tela
+						if(enemy.get_hp() <= 0):
+							#Morreu
+							enemyList.remove(enemy)
 
 
 def move_enemy(a_enemy):
@@ -146,17 +145,37 @@ def move_enemy(a_enemy):
 
 
 def insert_enemies():
-	enemy1 = WarShip(1)
-	enemy2 = WarShip(2)
 
-	enemy1.set_x(1000)
-	enemy1.set_y(0)
+	enemies = [WarShip() for i in range(5)]
+	for i in enemies:
+		i.set_y(random.randrange(1,MAXY))
+		enemyList.insert(0,i)
+	enemies = [FastShip() for i in range(5)]
+	for i in enemies:
+		i.set_y(random.randrange(1,MAXY))
+		enemyList.insert(0,i)
+	enemies = [DestroyerShip() for i in range(3)]
+	for i in enemies:
+		i.set_y(random.randrange(1,MAXY))
+		enemyList.insert(0,i)
+
+	random.shuffle(enemyList)
+
+	for en in enemyList:
+		print "Y: " + str(en.get_x())
+
+
+#	enemy1 = WarShip(1)
+#	enemy2 = WarShip(2)
+
+#	enemy1.set_x(1000)
+#	enemy1.set_y(0)
 	
-	enemy2.set_x(800)
-	enemy2.set_y(400)
+#	enemy2.set_x(800)
+#	enemy2.set_y(400)
 
-	enemyList.insert(0, enemy1)
-	enemyList.insert(0, enemy2)
+#	enemyList.insert(0, enemy1)
+#	enemyList.insert(0, enemy2)
 
 
 ####################################################################################

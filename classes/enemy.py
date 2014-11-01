@@ -12,8 +12,10 @@ class Ship(object):
 	_armor = 0
 	_damage = 0
 	_speed = 0
-	_x = 0
+	_x = MAXX
 	_y = randrange(MAXY)
+	deslocX = 0
+	deslocY = 0
 
 	def __init__(self, n = None, a = None, d = None, s = None):
 		if n != None:
@@ -121,26 +123,36 @@ class Ship(object):
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas
 	def __init__(self, n = None):
 		super(FastShip, self).__init__(n, 5, 7, 20)
+		self.deslocX = -4
+		self.deslocY = 4
 
 	def Attack(self):
 		return "FastShip attack!"
 
 	def Move(self):
-		return "FastShip moving!"
+		if(self._x < PLANET_EARTH_POSX):
+			self._x = MAXX-10
+		if(self._y < 10):
+			self.deslocY = 4
+		if(self._y > MAXY-10):
+			self.deslocY = -4
+
+		self._x = self._x +  self.deslocX
+		self._y = self._y +  self.deslocY
 
 class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao forte e eh a mais lenta
-	
-	deslocX = -2
-	deslocY = -2
+
 
 	def __init__(self, n = None):
 		super(WarShip, self).__init__(n, 20, 7, 5)
+		self.deslocX = -2
+		self.deslocY = 2
 
 	def Attack(self):
 		return "WarShip attack!"
 
 	def Move(self):
-		if(self._x < 450):
+		if(self._x < PLANET_EARTH_POSX):
 			self._x = MAXX-10
 		if(self._y < 10):
 			self.deslocY = 2
@@ -156,10 +168,20 @@ class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao f
 class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas nem tao resistentes
 	def __init__(self, n = None):
 		super(DestroyerShip, self).__init__(n, 7, 15, 7)
+		self.deslocX = -0.9
+		self.deslocY = 0.9
 
 	def Attack(self):
 		return "DestroyerShip attack!"
 
 	def Move(self):
-		return "DestroyerShip moving!"
+		if(self._x < PLANET_EARTH_POSX):
+			self._x = MAXX-10
+		if(self._y < 10):
+			self.deslocY = 0.9
+		if(self._y > MAXY-10):
+			self.deslocY = -0.9
+
+		self._x = self._x +  self.deslocX
+		self._y = self._y +  self.deslocY
 

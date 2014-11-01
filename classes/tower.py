@@ -11,8 +11,6 @@ class tower(object):
 	bullet = None 
 	#bullet = Bullet() #futuramente cada lista podera ter uma lista de projeteis caso atirar mais de uma vez seguida
 
-	locked_enemy = None
-
 	def __init__(self, x = None, y = None):
 		if x != None and y != None:
 			self._x = x 
@@ -36,16 +34,12 @@ class tower(object):
 	def stop_shoot(self):
 		self._shooting = False
 
-	def get_locked_enemy(self):
-		return self.locked_enemy
-
 	#Funcao tem por objetivo mirar no inimigo
 	#Futuramente pode receber o id do inimigo tambem para poder achar ele na lista de inimigos
 	#Nao pega novos inimigos enquanto esta atirando (mas podemos mudar isso criando mais um objeto Bullet e colocando numa lista,
 	#chamando alguma funcao de alta ordem para atirar e tal)
-	def lock_target(self, enemy, enemyX, enemyY):
+	def lock_target(self, enemyX, enemyY):
 		if(self._shooting == False): #So pega novo alvo se nao tiver atirando
-			self.locked_enemy = enemy
 			self.bullet = Bullet(self._x, self._y, enemyX, enemyY) #"mira" em um novo alvo (na pratica eh calcular a reta ate ele para atirar)
 			self._shooting = True
 
