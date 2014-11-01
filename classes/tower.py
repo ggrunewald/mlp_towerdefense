@@ -1,11 +1,12 @@
 from random import randrange
 
 from defines.definitions import *
+from classes.entity import *
 from classes.bullet import *
 
-class tower(object):
-	_x = 0
-	_y = 0
+class tower(Entity):
+	#_x = 0
+	#_y = 0
 	_shooting = False #flag que indica se torre esta atirando
 
 	bullet = None 
@@ -13,20 +14,12 @@ class tower(object):
 
 	def __init__(self, x = None, y = None):
 		if x != None and y != None:
-			self._x = x 
-			self._y = y
+			super(tower, self).__init__(x, y)
+		#	self._x = x 
+		#	self._y = y
+		
 
-	def get_posX(self):
-	    return self._x
-	
-	def set_posX(self, value):
-	    self._x = value
-	
-	def get_posY(self):
-	    return self._y
-	
-	def set_posY(self, value):
-	    self._y = value
+
 
 	def is_shooting(self):
 		return self._shooting

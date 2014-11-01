@@ -2,18 +2,19 @@ from abc import ABCMeta, abstractmethod
 from random import randrange
 
 from defines.definitions import *
+from classes.entity import *
 
 #Classe abstrata Inimigos
 
-class Ship(object):
+class Ship(Entity):
 	__metaclass__ = ABCMeta
 	_num = 0
 	_hp = 3
 	_armor = 0
 	_damage = 0
 	_speed = 0
-	_x = MAXX
-	_y = randrange(MAXY)
+	#_x = MAXX
+	#_y = randrange(MAXY)
 	deslocX = 0
 	deslocY = 0
 
@@ -26,6 +27,8 @@ class Ship(object):
 			self._damage = d
 		if s != None:
 			self._speed = s
+
+		super(Ship, self).__init__(MAXX, randrange(MAXY))
 
 	@abstractmethod
 	def Attack(self):
@@ -97,18 +100,6 @@ class Ship(object):
 	def y(self, y):
 		if 0 <= y <= MAXY:
 			_y = y
-
-	def set_x(self, x):
-		self._x = x
-
-	def set_y(self, y):
-		self._y = y
-
-	def get_x(self):
-		return self._x
-
-	def get_y(self):
-		return self._y
 
 	def get_id(self):
 		return self._num

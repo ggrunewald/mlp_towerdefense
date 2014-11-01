@@ -8,6 +8,7 @@ from classes.player import *		#importa modulo da classe jogador
 from classes.enemy import *		#importa modulo da classe jogador
 from classes.tower import *
 from classes.bullet import *
+from classes.entity import *
 
 from defines.colors import *		#importa definicoes de cores
 from defines.difficulties import *	#importa definicoes de niveis de dificuldades
@@ -18,11 +19,23 @@ from menu.inputbox import *		#importa modulo de caixa de texto
 import random
 
 
+
 pygame.init()					#inicializa modulos importados
 
 surface = pygame.display.set_mode((MAXX, MAXY))	#abre a janela e cria um objeto surface que eh retornado pra variavel surface
 
 pygame.display.set_caption("Earth Defense")					#muda o nome na barra da janela
+
+
+######################################
+#CARREGAMENTO DAS IMAGENS DO PROGRAMA#
+######################################
+space = pygame.image.load("images/space.jpg")
+earth = pygame.image.load("images/earth.png")
+towers = pygame.image.load("images/human.png")
+bullet = pygame.image.load("images/ball.png")
+et = pygame.image.load("images/ufo.png")
+
 
 surface.fill(BLACK)
 menu = Menu()
@@ -37,6 +50,7 @@ player = Player()
 
 while menuContinue:											#loop do menu
 
+	surface.blit(space, (0, 0))
 	menu.draw()
 	pygame.display.update()
 
@@ -79,15 +93,6 @@ pauseMenu.set_fontsize(64)
 pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 
 
-######################################
-#CARREGAMENTO DAS IMAGENS DO PROGRAMA#
-######################################
-space = pygame.image.load("images/space.jpg")
-earth = pygame.image.load("images/earth.png")
-towers = pygame.image.load("images/human.png")
-bullet = pygame.image.load("images/ball.png")
-et = pygame.image.load("images/ufo.png")
-
 
 
 #################################################################################
@@ -96,7 +101,7 @@ et = pygame.image.load("images/ufo.png")
 #FUNCAO PARA IMPRIMIR AS TORRES CRIADAS E ATIRAR NO INIMIGO
 #NAO SABIA ONDE MELHOR BOTAR...BOTEI AQUI.
 def attack_enemy(a_tower):
-	surface.blit(towers, (a_tower.get_posX(), a_tower.get_posY()))
+	surface.blit(towers, (a_tower.get_x(), a_tower.get_y()))
 	
 
 	#===============================================#
@@ -254,7 +259,7 @@ while True:										#loop principal
 
 			adiciona = 1
 			for elem in towerList:
-				if mouseX > elem.get_posX()+50 or mouseX < elem.get_posX() - 50 or mouseY > elem.get_posY()+ 50 or mouseY < elem.get_posY() - 50:
+				if mouseX > elem.get_x()+50 or mouseX < elem.get_x() - 50 or mouseY > elem.get_y()+ 50 or mouseY < elem.get_y() - 50:
 					new_tower = tower(mouseX, mouseY)
 					adiciona = adiciona*1
 				else:
