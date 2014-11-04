@@ -115,11 +115,11 @@ def attack_enemy(a_tower):
 			closest_enemy = None
 			shortest_distance = 999999 #infinito
 			for enemy in enemyList:
-				if (enemy.x - PLANET_EARTH_POSX) < shortest_distance: #Se eh o mais proximo do planeta
+				if ((enemy.x - PLANET_EARTH_POSX) < shortest_distance): #Se eh o mais proximo do planeta
 					shortest_distance = enemy.x - PLANET_EARTH_POSX #Salva distancia
 					closest_enemy = enemy 	#Indica inimigo pre selecionado
-
-			a_tower.lock_target(closest_enemy.x,closest_enemy.y) #Detecta inimigo que gostaria de atirar
+				
+				a_tower.lock_target(closest_enemy.x,closest_enemy.y) #Detecta inimigo que gostaria de atirar
 
 	    #=================================#
 		# Codigo para imprimir o projetil #
@@ -131,8 +131,8 @@ def attack_enemy(a_tower):
 		# Codigo para detectar se atingiu um inimigo #
 		#============================================#
 		for enemy in enemyList:
-			if(bullet_x >= enemy.x-DAMAGE_AREA and bullet_x <= enemy.x+DAMAGE_AREA):
-					if(bullet_y >= enemy.y-DAMAGE_AREA and bullet_y <= enemy.y+DAMAGE_AREA):
+			if(bullet_x >= enemy.x-DAMAGE_AREAX and bullet_x <= enemy.x+DAMAGE_AREAX):
+					if(bullet_y >= enemy.y-DAMAGE_AREAY and bullet_y <= enemy.y+DAMAGE_AREAY):
 						enemy.hit(1)  #Tira 1 de HP (coloquei um valor pequeno na classe enemy para teste)
 						print "HIT!"
 						a_tower.stop_shoot() #Torre acertou o inimigo, por isso, mesmo projetil nao continua trajetoria na tela
@@ -146,20 +146,23 @@ def attack_enemy(a_tower):
 
 def move_enemy(a_enemy):
 	surface.blit(a_enemy.image, (a_enemy.x, a_enemy.y))
+	if a_enemy.x !=0 and a_enemy.x < PLANET_EARTH_POSX:
+		player.hp = player.hp - a_enemy.damage
+		print "EXPLODE! Vida restante:" + str(player.hp)
 	a_enemy.Move()
 
 
 def insert_enemies():
 
-	enemies = [WarShip() for i in range(5)]
+	enemies = [WarShip() for i in range(player.difficulty*4 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
 		enemyList.insert(0,i)
-	enemies = [FastShip() for i in range(5)]
+	enemies = [FastShip() for i in range(player.difficulty*4 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
 		enemyList.insert(0,i)
-	enemies = [DestroyerShip() for i in range(3)]
+	enemies = [DestroyerShip() for i in range(player.difficulty*3 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
 		enemyList.insert(0,i)
@@ -168,20 +171,6 @@ def insert_enemies():
 
 	for en in enemyList:
 		print "Y: " + str(en.y)
-
-
-#	enemy1 = WarShip(1)
-#	enemy2 = WarShip(2)
-
-#	enemy1.set_x(1000)
-#	enemy1.set_y(0)
-	
-#	enemy2.set_x(800)
-#	enemy2.set_y(400)
-
-#	enemyList.insert(0, enemy1)
-#	enemyList.insert(0, enemy2)
-
 
 ####################################################################################
 
@@ -217,7 +206,7 @@ while True:										#loop principal
 
 	for event in pygame.event.get():			#se ocorrer um evento
 
-		if event.type == QUIT:	#se for o evento de fechar a janela ou apertar ESC
+		if event.type == QUIT:					#se for o evento de fechar a janela ou apertar ESC
 			pygame.quit()						#fecha modulos do pygame
 			sys.exit()							#termina o programa
 
@@ -259,7 +248,7 @@ while True:										#loop principal
 
 			adiciona = 1
 			for elem in towerList:
-				if mouseX > elem.x+50 or mouseX < elem.x - 50 or mouseY > elem.y+ 50 or mouseY < elem.y - 50:
+				if mouseX > elem.x + 27 or mouseX < elem.x - 27 or mouseY > elem.y + 47 or mouseY < elem.y - 47:
 					new_tower = tower(mouseX, mouseY)
 					adiciona = adiciona*1
 				else:
