@@ -101,7 +101,7 @@ pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 #FUNCAO PARA IMPRIMIR AS TORRES CRIADAS E ATIRAR NO INIMIGO
 #NAO SABIA ONDE MELHOR BOTAR...BOTEI AQUI.
 def attack_enemy(a_tower):
-	surface.blit(towers, (a_tower.get_x(), a_tower.get_y()))
+	surface.blit(towers, (a_tower.x, a_tower.y))
 	
 
 	#===============================================#
@@ -118,11 +118,11 @@ def attack_enemy(a_tower):
 			closest_enemy = None
 			shortest_distance = 999999 #infinito
 			for enemy in enemyList:
-				if (enemy.get_x() - PLANET_EARTH_POSX) < shortest_distance: #Se eh o mais proximo do planeta
-					shortest_distance = enemy.get_x() - PLANET_EARTH_POSX #Salva distancia
+				if (enemy.x - PLANET_EARTH_POSX) < shortest_distance: #Se eh o mais proximo do planeta
+					shortest_distance = enemy.x - PLANET_EARTH_POSX #Salva distancia
 					closest_enemy = enemy 	#Indica inimigo pre selecionado
 
-			a_tower.lock_target(closest_enemy.get_x(),closest_enemy.get_y()) #Detecta inimigo que gostaria de atirar
+			a_tower.lock_target(closest_enemy.x,closest_enemy.y) #Detecta inimigo que gostaria de atirar
 
 	    #=================================#
 		# Codigo para imprimir o projetil #
@@ -134,18 +134,21 @@ def attack_enemy(a_tower):
 		# Codigo para detectar se atingiu um inimigo #
 		#============================================#
 		for enemy in enemyList:
-			if(bullet_x >= enemy.get_x()-DAMAGE_AREA and bullet_x <= enemy.get_x()+DAMAGE_AREA):
-					if(bullet_y >= enemy.get_y()-DAMAGE_AREA and bullet_y <= enemy.get_y()+DAMAGE_AREA):
+			if(bullet_x >= enemy.x-DAMAGE_AREA and bullet_x <= enemy.x+DAMAGE_AREA):
+					if(bullet_y >= enemy.y-DAMAGE_AREA and bullet_y <= enemy.y+DAMAGE_AREA):
 						enemy.hit(1)  #Tira 1 de HP (coloquei um valor pequeno na classe enemy para teste)
 						print "HIT!"
 						a_tower.stop_shoot() #Torre acertou o inimigo, por isso, mesmo projetil nao continua trajetoria na tela
-						if(enemy.get_hp() <= 0):
+						if(enemy.hp <= 0):
 							#Morreu
 							enemyList.remove(enemy)
+			elif(enemy.hp <= 0):
+				#Morreu
+				enemyList.remove(enemy)
 
 
 def move_enemy(a_enemy):
-	surface.blit(et, (a_enemy.get_x(), a_enemy.get_y()))
+	surface.blit(et, (a_enemy.x, a_enemy.y))
 	a_enemy.Move()
 
 
@@ -153,21 +156,21 @@ def insert_enemies():
 
 	enemies = [WarShip() for i in range(5)]
 	for i in enemies:
-		i.set_y(random.randrange(1,MAXY))
+		i.y = random.randrange(1,MAXY)
 		enemyList.insert(0,i)
 	enemies = [FastShip() for i in range(5)]
 	for i in enemies:
-		i.set_y(random.randrange(1,MAXY))
+		i.y = random.randrange(1,MAXY)
 		enemyList.insert(0,i)
 	enemies = [DestroyerShip() for i in range(3)]
 	for i in enemies:
-		i.set_y(random.randrange(1,MAXY))
+		i.y = random.randrange(1,MAXY)
 		enemyList.insert(0,i)
 
 	random.shuffle(enemyList)
 
 	for en in enemyList:
-		print "Y: " + str(en.get_x())
+		print "Y: " + str(en.y)
 
 
 #	enemy1 = WarShip(1)
@@ -230,7 +233,7 @@ while True:										#loop principal
 						if event.type == KEYDOWN:
 							if event.key == K_ESCAPE:
 								paused = False
-						#COMEcO
+						#COMECO
 							if event.key == K_UP or event.key == K_DOWN:
 								if pauseMenu.get_position() == RESUME:
 									pauseMenu.draw(1)
@@ -259,7 +262,7 @@ while True:										#loop principal
 
 			adiciona = 1
 			for elem in towerList:
-				if mouseX > elem.get_x()+50 or mouseX < elem.get_x() - 50 or mouseY > elem.get_y()+ 50 or mouseY < elem.get_y() - 50:
+				if mouseX > elem.x+50 or mouseX < elem.x - 50 or mouseY > elem.y+ 50 or mouseY < elem.y - 50:
 					new_tower = tower(mouseX, mouseY)
 					adiciona = adiciona*1
 				else:
