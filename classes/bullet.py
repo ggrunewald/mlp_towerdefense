@@ -2,14 +2,10 @@ from __future__ import division
 from random import randrange
 
 from defines.definitions import *
+from classes.entity import *
 
-class Bullet(object):
-	x = 0
-	y = 0
+class Bullet(Entity):
 	path_angle = 0
-
-	deslocX = 0
-	deslocY = 0
 
 	end = 0 #Flag que indica se bala concluiu sua trajetoria
 

@@ -12,19 +12,14 @@ class Ship(Entity):
 	_hp = 3
 	_armor = 0
 	_damage = 0
-	_speed = 0
-	deslocX = 0
-	deslocY = 0
 
-	def __init__(self, n = None, a = None, d = None, s = None):
+	def __init__(self, n = None, a = None, d = None):
 		if n != None:
 			self._num = n
 		if a != None:
 			self._armor = a
 		if d != None:
 			self._damage = d
-		if s != None:
-			self._speed = s
 
 		super(Ship, self).__init__(MAXX, randrange(MAXY))
 
@@ -64,15 +59,6 @@ class Ship(Entity):
 			_damage = d
 
 	@property
-	def speed(self):
-		return self._speed
-
-	@speed.setter
-	def speed(self, s):
-		if s >= 0:
-			_speed = s
-
-	@property
 	def hp(self):
 		return self._hp
 
@@ -99,7 +85,7 @@ class Ship(Entity):
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas
 
 	def __init__(self, n = None):
-		super(FastShip, self).__init__(n, 5, 7, 20)
+		super(FastShip, self).__init__(n, 5, 7)
 		self.deslocX = -4
 		self.deslocY = 4
 
@@ -111,7 +97,7 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao forte e eh a mais lenta
 
 	def __init__(self, n = None):
-		super(WarShip, self).__init__(n, 20, 7, 5)
+		super(WarShip, self).__init__(n, 20, 7)
 		self.deslocX = -2
 		self.deslocY = 2
 
@@ -122,7 +108,7 @@ class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao f
 class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas nem tao resistentes
 
 	def __init__(self, n = None):
-		super(DestroyerShip, self).__init__(n, 7, 15, 7)
+		super(DestroyerShip, self).__init__(n, 7, 15)
 		self.deslocX = -0.9
 		self.deslocY = 0.9
 

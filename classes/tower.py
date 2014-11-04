@@ -5,8 +5,6 @@ from classes.entity import *
 from classes.bullet import *
 
 class tower(Entity):
-	#_x = 0
-	#_y = 0
 	_shooting = False #flag que indica se torre esta atirando
 
 	bullet = None 
@@ -15,11 +13,6 @@ class tower(Entity):
 	def __init__(self, x = None, y = None):
 		if x != None and y != None:
 			super(tower, self).__init__(x, y)
-		#	self._x = x 
-		#	self._y = y
-		
-
-
 
 	def is_shooting(self):
 		return self._shooting
