@@ -6,7 +6,6 @@ from classes.entity import *
 
 class Bullet(Entity):
 	path_angle = 0
-
 	end = 0 #Flag que indica se bala concluiu sua trajetoria
 
 	def __init__ (self, tower_x  = None, tower_y  = None, enemy_x  = None, enemy_y = None):

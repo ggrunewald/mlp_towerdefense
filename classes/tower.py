@@ -6,7 +6,6 @@ from classes.bullet import *
 
 class tower(Entity):
 	_shooting = False #flag que indica se torre esta atirando
-
 	bullet = None 
 	#bullet = Bullet() #futuramente cada lista podera ter uma lista de projeteis caso atirar mais de uma vez seguida
 
@@ -26,7 +25,7 @@ class tower(Entity):
 	#chamando alguma funcao de alta ordem para atirar e tal)
 	def lock_target(self, enemyX, enemyY):
 		if(self._shooting == False): #So pega novo alvo se nao tiver atirando
-			self.bullet = Bullet(self._x, self._y, enemyX, enemyY) #"mira" em um novo alvo (na pratica eh calcular a reta ate ele para atirar)
+			self.bullet = Bullet(self._x, self._y, enemyX, enemyY) #"mira" em um novo alvo (calcular a reta ate ele para atirar)
 			self._shooting = True
 
     #Essa funcao basicamente so chama a funcao que fica atualizando a posicao do projetil da classe bullet

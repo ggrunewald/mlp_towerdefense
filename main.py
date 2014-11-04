@@ -32,9 +32,8 @@ pygame.display.set_caption("Earth Defense")					#muda o nome na barra da janela
 ######################################
 space = pygame.image.load("images/space.jpg")
 earth = pygame.image.load("images/earth.png")
-towers = pygame.image.load("images/human.png")
+towers = pygame.image.load("images/player.png")
 bullet = pygame.image.load("images/ball.png")
-et = pygame.image.load("images/ufo.png")
 
 
 surface.fill(BLACK)
@@ -93,8 +92,6 @@ pauseMenu.set_fontsize(64)
 pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 
 
-
-
 #################################################################################
 #                    ALGUMAS FUNCOES AUXILIARES PARA O PROGRAMA                 #  
 #################################################################################
@@ -148,7 +145,7 @@ def attack_enemy(a_tower):
 
 
 def move_enemy(a_enemy):
-	surface.blit(et, (a_enemy.x, a_enemy.y))
+	surface.blit(a_enemy.image, (a_enemy.x, a_enemy.y))
 	a_enemy.Move()
 
 

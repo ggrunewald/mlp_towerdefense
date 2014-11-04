@@ -1,3 +1,5 @@
+import pygame	#importa modulo pygame
+
 from abc import ABCMeta, abstractmethod
 from random import randrange
 
@@ -9,7 +11,6 @@ from classes.entity import *
 class Ship(Entity):
 	__metaclass__ = ABCMeta
 	_num = 0
-	_hp = 3
 	_armor = 0
 	_damage = 0
 
@@ -60,17 +61,17 @@ class Ship(Entity):
 
 	@property
 	def hp(self):
-		return self._hp
+		return self._armor
 
 	@hp.setter
 	def hp(self, h):
-		_hp = h
+		_armor = h
 
 	def get_id(self):
 		return self._num
 
 	def hit(self, damage):
-		self._hp -= damage
+		self._armor -= damage
 
 	def Move(self):
 		if(self.x < PLANET_EARTH_POSX):
@@ -83,37 +84,40 @@ class Ship(Entity):
 
 #Classes especificas Inimigas
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas
+	image = pygame.image.load("images/ufast.png")
 
 	def __init__(self, n = None):
-		super(FastShip, self).__init__(n, 5, 7)
+		super(FastShip, self).__init__(n, 3, 3)
 		self.deslocX = -4
 		self.deslocY = 4
 
 	def Attack(self):
-		return "FastShip attack!"
+		print "FastShip attack!"
 
 
 
 class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao forte e eh a mais lenta
+	image = pygame.image.load("images/uwar.png")
 
 	def __init__(self, n = None):
-		super(WarShip, self).__init__(n, 20, 7)
+		super(WarShip, self).__init__(n, 10, 5)
 		self.deslocX = -2
 		self.deslocY = 2
 
 	def Attack(self):
-		return "WarShip attack!"
+		print "WarShip attack!"
 
 
 class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas nem tao resistentes
+	image = pygame.image.load("images/udestroyer.png")
 
 	def __init__(self, n = None):
-		super(DestroyerShip, self).__init__(n, 7, 15)
+		super(DestroyerShip, self).__init__(n, 5, 10)
 		self.deslocX = -0.9
 		self.deslocY = 0.9
 
 	def Attack(self):
-		return "DestroyerShip attack!"
+		print "DestroyerShip attack!"
 
 
 
