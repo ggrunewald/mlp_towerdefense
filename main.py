@@ -34,6 +34,7 @@ space = pygame.image.load("images/space.jpg")
 earth = pygame.image.load("images/earth.png")
 towers = pygame.image.load("images/player.png")
 bullet = pygame.image.load("images/ball.png")
+lifebar = pygame.image.load("images/lifebar.png")
 
 
 surface.fill(BLACK)
@@ -46,6 +47,9 @@ menu.draw()
 menuContinue = True
 
 player = Player()
+scoreFont = pygame.font.SysFont("purisa", 30, bold=True)
+moneyFont = pygame.font.SysFont("purisa", 30, bold=True)
+
 
 while menuContinue:											#loop do menu
 
@@ -133,15 +137,18 @@ def attack_enemy(a_tower):
 		for enemy in enemyList:
 			if(bullet_x >= enemy.x-DAMAGE_AREAX and bullet_x <= enemy.x+DAMAGE_AREAX):
 					if(bullet_y >= enemy.y-DAMAGE_AREAY and bullet_y <= enemy.y+DAMAGE_AREAY):
-						enemy.hit(1)  #Tira 1 de HP (coloquei um valor pequeno na classe enemy para teste)
+						enemy.hit(1)  #Tira 1 de HP (coloquei um valor pequeno na classe enemy para teste)	
 						print "HIT!"
 						a_tower.stop_shoot() #Torre acertou o inimigo, por isso, mesmo projetil nao continua trajetoria na tela
 						if(enemy.hp <= 0):
 							#Morreu
-							enemyList.remove(enemy)
-			elif(enemy.hp <= 0):
+							enemy.ResetStats()
+							###enemyList.remove(enemy)    #Agora inimigos sempre revivem   
+							player.score=player.score+1	#Contabiliza pontos para jogador	
+			elif(enemy.hp <= 0): #Repete a verificacao da morte do inimigo pq outras torres podem ter destruido
 				#Morreu
-				enemyList.remove(enemy)
+				enemy.ResetStats()
+				##enemyList.remove(enemy)   #Agora inimigos sempre revivem
 
 
 def move_enemy(a_enemy):
@@ -192,6 +199,13 @@ while True:										#loop principal
 	surface.blit(space, (0, 0))
 	surface.blit(earth, (-300, 20))
 
+	##############################################
+	#			ATUALIZACAO DA TELA 			 #
+	##############################################
+	#											 #
+	#											 #
+
+
 	#######################
 	#APLICA AS FUNCOES MAP#
 	#######################
@@ -200,9 +214,22 @@ while True:										#loop principal
 	#Imprime inimigos
 	map(move_enemy, enemyList)
 
+	##################################
+	#DESENHA BARRA DA VIDA DO JOGADOR#
+	##################################
+	pygame.draw.rect(surface, player.get_hp_status(), [10, 600, 10+ player.hp*2, 14])
+
+	###################################################
+	#IMPRIME LABEL COM OS PONTOS E DINHEIRO DO JOGADOR#
+	###################################################
+	surface.blit(scoreFont.render(str(player.score) + " Points", 0, WHITE), (12, 8))
+	surface.blit(moneyFont.render(str(player.get_money()) + " Money", 0, YELLOW), (875, 8))
 
 	pygame.display.update()
 
+	#											 #
+	#											 #
+	##############################################
 
 	for event in pygame.event.get():			#se ocorrer um evento
 
@@ -236,24 +263,30 @@ while True:										#loop principal
 					pygame.display.update()
 
 		if event.type == MOUSEBUTTONDOWN:
-			#Pega as coordenadas do mouse
-			mouseX, mouseY = pygame.mouse.get_pos()
-			#Cria nova torre na poiscao do mouse
-			#Se nao tem nenhuma torre nos vizinhos...
-			if towerList == []:
-				new_tower = tower(mouseX, mouseY)
-				print str(mouseX) + "   " + str(mouseY)
-				#Adiciona torre na lista de torre
-				towerList.insert(0, new_tower)	
-
-			adiciona = 1
-			for elem in towerList:
-				if mouseX > elem.x + 27 or mouseX < elem.x - 27 or mouseY > elem.y + 47 or mouseY < elem.y - 47:
+			if(player.have_money() is True):
+				#Pega as coordenadas do mouse
+				mouseX, mouseY = pygame.mouse.get_pos()
+				#Cria nova torre na poiscao do mouse
+				#Se nao tem nenhuma torre nos vizinhos...
+				if towerList == []:
 					new_tower = tower(mouseX, mouseY)
-					adiciona = adiciona*1
-				else:
-					adiciona = 0
+					print str(mouseX) + "   " + str(mouseY)
+					#Adiciona torre na lista de torre
+					player.buy_tower()
+					towerList.insert(0, new_tower)	
 
-			if(adiciona == 1):
-				#Adiciona torre na lista de torre
-				towerList.insert(0, new_tower)
+				adiciona = 1
+				for elem in towerList:
+					if mouseX > elem.x + 27 or mouseX < elem.x - 27 or mouseY > elem.y + 47 or mouseY < elem.y - 47:
+						new_tower = tower(mouseX, mouseY)
+						#if(player.buy_tower() is True):
+						adiciona = adiciona*1
+
+					else:
+						adiciona = 0
+
+				if(adiciona == 1):
+					player.buy_tower()
+					print str(mouseX) + "   " + str(mouseY)
+					#Adiciona torre na lista de torre
+					towerList.insert(0, new_tower)

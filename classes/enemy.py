@@ -6,6 +6,7 @@ from random import randrange
 from defines.definitions import *
 from classes.entity import *
 
+import random
 #Classe abstrata Inimigos
 
 class Ship(Entity):
@@ -30,6 +31,10 @@ class Ship(Entity):
 
 	@abstractmethod
 	def Move(self): 
+		pass
+
+	@abstractmethod
+	def ResetStats(self):
 		pass
 
 	@property
@@ -94,6 +99,11 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 	def Attack(self):
 		print "FastShip attack!"
 
+	def ResetStats(self):
+		self._x = MAXX
+		self._y = random.randrange(1,MAXY)
+		self._armor = 3
+
 
 
 class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao forte e eh a mais lenta
@@ -107,6 +117,11 @@ class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao f
 	def Attack(self):
 		print "WarShip attack!"
 
+	def ResetStats(self):
+		self._x = MAXX
+		self._y = random.randrange(1,MAXY)
+		self._armor = 10
+
 
 class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas nem tao resistentes
 	image = pygame.image.load("images/udestroyer.png")
@@ -119,5 +134,9 @@ class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas
 	def Attack(self):
 		print "DestroyerShip attack!"
 
+	def ResetStats(self):
+		self._x = MAXX
+		self._y = random.randrange(1,MAXY)
+		self._armor = 5
 
 

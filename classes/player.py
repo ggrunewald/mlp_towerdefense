@@ -1,9 +1,12 @@
 from defines.difficulties import *	#importa definicoes de niveis de dificuldades
+from defines.colors import *
 
 class Player(object):
 	_name = "anonimo"
 	_difficulty = EASY
 	_hp = 100
+	_score = 0
+	_money = 5
 
 	def __init__(self, n = None, d = None):
 		if n != None:
@@ -49,3 +52,33 @@ class Player(object):
 			self._hp = p
 		else:
 			return
+
+	@property
+	def score(self):
+	    return self._score
+	@score.setter
+	def score(self, value):
+	    self._score = value
+
+	def buy_tower(self):
+			self._money = self._money - 1
+
+	def have_money(self):
+		if(self._money > 0):
+			return True
+		else:
+			return False
+
+	def get_money(self):
+		return self._money
+
+
+	def get_hp_status(self):
+		if(self._hp > 60):
+			return GREEN
+		elif (self._hp < 60 and self._hp > 40):
+			return YELLOW
+		elif(self._hp < 40):
+			return RED
+	
+	
