@@ -35,7 +35,9 @@ earth = pygame.image.load("images/earth.png")
 towers = pygame.image.load("images/player.png")
 bullet = pygame.image.load("images/ball.png")
 lifebar = pygame.image.load("images/lifebar.png")
-
+fast_ship_explosion_image = pygame.image.load("images/expl1.png")
+war_ship_explosion_image = pygame.image.load("images/expl2.png")
+destroyer_ship_explosion_image = pygame.image.load("images/expl3.png") 
 
 surface.fill(BLACK)
 menu = Menu()
@@ -101,6 +103,14 @@ pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 #################################################################################
 #FUNCAO PARA IMPRIMIR AS TORRES CRIADAS E ATIRAR NO INIMIGO
 #NAO SABIA ONDE MELHOR BOTAR...BOTEI AQUI.
+def draw_explosion(enemy):
+	if(  type(enemy) is FastShip):
+		surface.blit(fast_ship_explosion_image, enemy.get_explosion_coordinate())
+	elif(type(enemy) is WarShip):
+		surface.blit(war_ship_explosion_image, enemy.get_explosion_coordinate())
+	elif(type(enemy) is DestroyerShip):
+		surface.blit(destroyer_ship_explosion_image, enemy.get_explosion_coordinate())
+
 def attack_enemy(a_tower):
 	surface.blit(towers, (a_tower.x, a_tower.y))
 	
@@ -142,13 +152,17 @@ def attack_enemy(a_tower):
 						a_tower.stop_shoot() #Torre acertou o inimigo, por isso, mesmo projetil nao continua trajetoria na tela
 						if(enemy.hp <= 0):
 							#Morreu
+							enemy.self_destruct()
 							enemy.ResetStats()
 							###enemyList.remove(enemy)    #Agora inimigos sempre revivem   
 							player.score=player.score+1	#Contabiliza pontos para jogador	
 			elif(enemy.hp <= 0): #Repete a verificacao da morte do inimigo pq outras torres podem ter destruido
 				#Morreu
+				enemy.self_destruc()
 				enemy.ResetStats()
 				##enemyList.remove(enemy)   #Agora inimigos sempre revivem
+			if(enemy.exploding()):	
+				draw_explosion(enemy)
 
 
 def move_enemy(a_enemy):

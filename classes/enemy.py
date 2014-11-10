@@ -14,6 +14,10 @@ class Ship(Entity):
 	_num = 0
 	_armor = 0
 	_damage = 0
+	_explosion = False
+	_explosion_x = 0
+	_explosion_y = 0
+	_explosion_time = 10
 
 	def __init__(self, n = None, a = None, d = None):
 		if n != None:
@@ -86,6 +90,24 @@ class Ship(Entity):
 
 		self.x = self.x + self.deslocX
 		self.y = self.y + self.deslocY
+
+	def exploding(self):
+		if(self._explosion_time > 0):
+			self._explosion_time = self._explosion_time - 1
+		else:
+			self._explosion = False
+			self._explosion_time = 20
+
+		return self._explosion
+
+	def self_destruct(self):
+		self._explosion_x = self._x
+		self._explosion_y = self._y
+		self._explosion = True
+
+	def get_explosion_coordinate(self):
+		return self._explosion_x, self._explosion_y
+
 
 #Classes especificas Inimigas
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas
