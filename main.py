@@ -151,12 +151,12 @@ def attack_enemy(a_tower):
 				##enemyList.remove(enemy)   #Agora inimigos sempre revivem
 
 
-def move_enemy(a_enemy):
+def attack_earth(a_enemy):
 	surface.blit(a_enemy.image, (a_enemy.x, a_enemy.y))
 	if a_enemy.x !=0 and a_enemy.x < PLANET_EARTH_POSX:
 		player.hp = player.hp - a_enemy.damage
 		print "EXPLODE! Vida restante:" + str(player.hp)
-	a_enemy.Move()
+	#a_enemy.Move()
 
 
 def insert_enemies():
@@ -210,9 +210,12 @@ while True:										#loop principal
 	#APLICA AS FUNCOES MAP#
 	#######################
 	#Atualiza projetil para todas as torres
+	map(attack_earth, enemyList)
 	map(attack_enemy, towerList)
 	#Imprime inimigos
-	map(move_enemy, enemyList)
+	map(lambda a_enemy: a_enemy.Move(), enemyList)
+
+
 
 	##################################
 	#DESENHA BARRA DA VIDA DO JOGADOR#
