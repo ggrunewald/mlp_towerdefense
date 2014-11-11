@@ -39,10 +39,6 @@ class Ship(Entity):
 	def Move(self): 
 		pass
 
-	@abstractmethod
-	def ResetStats(self):
-		pass
-
 	@property
 	def num(self):
 		return self._num
