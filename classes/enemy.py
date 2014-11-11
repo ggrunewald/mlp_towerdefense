@@ -32,9 +32,8 @@ class Ship(Entity):
 		super(Ship, self).__init__(MAXX, randrange(MAXY))
 
 
-	@abstractmethod
 	def Attack(self):
-		pass
+		print "Ship Attack!"
 
 	@abstractmethod
 	def Move(self): 
@@ -127,7 +126,7 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 		self.deslocX = -4
 		self.deslocY = 4
 
-	def Attack(self):
+	def Attack(self, n1 = 0):
 		print "FastShip attack!"
 
 	def Move(self):
@@ -157,7 +156,7 @@ class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao f
 		self.deslocX = -2
 		self.deslocY = 2*2
 
-	def Attack(self):
+	def Attack(self, n1 = 0, n2 = 0):
 		print "WarShip attack!"
 
 	def Move(self):
@@ -184,7 +183,7 @@ class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas
 		self.deslocX = -0.9
 		self.deslocY = 0.9
 
-	def Attack(self):
+	def Attack(self, n1 = 0, n2 = 0, n3 = 0):
 		print "DestroyerShip attack!"
 
 	def Move(self):
