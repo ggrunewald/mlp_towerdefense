@@ -15,6 +15,7 @@ class Ship(Entity):
 	_num = 0
 	_armor = 0
 	_damage = 0
+	_delay = 0
 	_explosion = False
 	_explosion_x = 0
 	_explosion_y = 0
@@ -74,6 +75,14 @@ class Ship(Entity):
 	def hp(self):
 		return self._armor
 
+	@property
+	def delay(self):
+	    return self._delay
+	@delay.setter
+	def delay(self, value):
+	    self._delay = value
+	
+
 	@hp.setter
 	def hp(self, h):
 		_armor = h
@@ -110,6 +119,14 @@ class Ship(Entity):
 	def get_explosion_coordinate(self):
 		return self._explosion_x, self._explosion_y
 
+	def ResetStats(self,x_ini, y_ini, new_delay, new_armor, new_desloc_x, new_desloc_y):
+		self._x = x_ini
+		self._y = y_ini
+		self._delay = new_delay
+		self._armor = new_armor
+		self.deslocX = new_desloc_x
+		self.deslocY = new_desloc_y
+
 #Classes especificas Inimigas
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas
 	image = pygame.image.load("images/ufast.png")
@@ -123,9 +140,12 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 		print "FastShip attack!"
 
 	def ResetStats(self):
-		self._x = MAXX
-		self._y = random.randrange(1,MAXY)
-		self._armor = 3
+		super(FastShip, self).ResetStats(MAXX, randrange(MAXY), randrange(20), self._armor+1, self.deslocX-0.3, self.deslocY)
+		#self._x = MAXX
+		#self._y = random.randrange(1,MAXY)
+		#self._delay = randrange(20)
+		#self._armor = 3*2
+		#self.
 
 
 
@@ -135,15 +155,16 @@ class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao f
 	def __init__(self, n = None):
 		super(WarShip, self).__init__(n, 10, 5)
 		self.deslocX = -2
-		self.deslocY = 2
+		self.deslocY = 2*2
 
 	def Attack(self):
 		print "WarShip attack!"
 
 	def ResetStats(self):
-		self._x = MAXX
-		self._y = random.randrange(1,MAXY)
-		self._armor = 10
+		super(WarShip, self).ResetStats(MAXX, randrange(MAXY), randrange(20), self._armor+1, self.deslocX-0.3, self.deslocY)
+		#self._x = MAXX
+		#self._y = random.randrange(1,MAXY)
+		#self._armor = 10*2
 
 
 class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas nem tao resistentes
@@ -158,8 +179,9 @@ class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas
 		print "DestroyerShip attack!"
 
 	def ResetStats(self):
-		self._x = MAXX
-		self._y = random.randrange(1,MAXY)
-		self._armor = 5
+		super(DestroyerShip, self).ResetStats(MAXX, randrange(MAXY), randrange(20), self._armor+1, self.deslocX-0.3, self.deslocY)
+		#self._x = MAXX
+		#self._y = random.randrange(1,MAXY)
+		#self._armor = 5
 
 

@@ -207,7 +207,11 @@ def move_enemy(a_enemy):
 	if a_enemy.x !=0 and a_enemy.x < PLANET_EARTH_POSX:
 		player.hp = player.hp - a_enemy.damage
 		print "EXPLODE! Vida restante:" + str(player.hp)
-	a_enemy.Move()
+	if(a_enemy.delay <= 0):
+		a_enemy.Move()
+	else:
+		a_enemy.delay = a_enemy.delay-1
+
 
 
 def insert_enemies():
@@ -215,14 +219,17 @@ def insert_enemies():
 	enemies = [WarShip() for i in range(player.difficulty*4 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
+		i.delay = randrange(MAX_DELAY)
 		enemyList.insert(0,i)
 	enemies = [FastShip() for i in range(player.difficulty*4 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
+		i.delay = randrange(MAX_DELAY)
 		enemyList.insert(0,i)
 	enemies = [DestroyerShip() for i in range(player.difficulty*3 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
+		i.delay = randrange(MAX_DELAY)
 		enemyList.insert(0,i)
 
 	random.shuffle(enemyList)
@@ -245,7 +252,7 @@ insert_enemies()
 #############################
 #MENU PRINCIPAL DA INTERFACE#
 #############################
-while True:										#loop principal
+while player.hp > 0:										#loop principal
 
 	surface.blit(space, (0, 0))
 	surface.blit(earth, (-300, 20))
@@ -272,7 +279,9 @@ while True:										#loop principal
 	##################################
 	#DESENHA BARRA DA VIDA DO JOGADOR#
 	##################################
-	pygame.draw.rect(surface, player.get_hp_status(), [10, 600, 10+ player.hp*2, 14])
+	pygame.draw.rect(surface, BLACK, [7, 597, 10+ 205, 20])
+	#pygame.draw.rect(surface, player.get_hp_status(), [10, 600, 10+ player.hp*2, 14])
+	pygame.draw.rect(surface, GREEN, [10, 600, 10+ player.hp*2, 14])
 
 	###################################################
 	#IMPRIME LABEL COM OS PONTOS E DINHEIRO DO JOGADOR#

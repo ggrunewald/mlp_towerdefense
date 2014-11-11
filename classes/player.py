@@ -93,7 +93,7 @@ class Player(object):
 		elif (self._hp < 60 and self._hp > 40):
 			return YELLOW
 		elif(self._hp < 40):
-			return RED
+			return (255,0,0)
 
 	def lose_score(self):
 		self._score = self._score-1
