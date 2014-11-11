@@ -132,7 +132,6 @@ pauseMenu.set_colors(WHITE, BLUE, BLACK)
 pauseMenu.set_fontsize(64)
 pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 
-
 #################################################################################
 #                    ALGUMAS FUNCOES AUXILIARES PARA O PROGRAMA                 #  
 #################################################################################
@@ -251,7 +250,31 @@ insert_enemies()
 #############################
 #MENU PRINCIPAL DA INTERFACE#
 #############################
-while player.hp > 0:										#loop principal
+while True:										#loop principal
+	if player.hp < 0:
+		endMenu = Menu()
+		endMenu.set_colors(WHITE, BLUE, BLACK)
+		endMenu.set_fontsize(64)
+		endMenu.init(['End Game', 'Final Score = ' + str(player.score), 'Exit'], surface)
+		while True:
+			for event in pygame.event.get():
+				if event.type == KEYDOWN:
+					if event.key == K_ESCAPE:
+						pygame.quit()
+						sys.exit()
+					if event.key == K_UP or event.key == K_DOWN:
+						if endMenu.get_position() == RESUME:
+							endMenu.draw(1)
+						else:
+							endMenu.draw(-1)
+					elif event.key == K_RETURN:
+						if endMenu.get_position() != RESUME:
+							pygame.quit()
+							sys.exit()
+
+			endMenu.draw()
+			pygame.display.update()
+			
 
 	surface.blit(space, (0, 0))
 	surface.blit(earth, (-300, 20))

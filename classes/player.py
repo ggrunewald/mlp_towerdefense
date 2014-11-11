@@ -48,7 +48,7 @@ class Player(object):
 
 	@hp.setter
 	def hp(self, p):
-		if 0 <= p <= 100:
+		if p <= 100:
 			self._hp = p
 		else:
 			return
