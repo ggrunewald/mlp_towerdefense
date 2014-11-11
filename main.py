@@ -269,7 +269,7 @@ insert_enemies()
 #MENU PRINCIPAL DA INTERFACE#
 #############################
 while True:										#loop principal
-	if player.hp < 0:
+	if player.hp <= 0:
 		endMenu = Menu()
 		endMenu.set_colors(WHITE, BLUE, BLACK)
 		endMenu.set_fontsize(64)
