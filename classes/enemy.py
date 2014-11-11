@@ -93,15 +93,6 @@ class Ship(Entity):
 	def hit(self, damage):
 		self._armor -= damage
 
-	def Move(self):
-		if(self.x < PLANET_EARTH_POSX):
-			self.x = MAXX-10
-		if self.y < 10 or self.y > MAXY-10:
-			self.deslocY = - self.deslocY
-
-		self.x = self.x + self.deslocX
-		self.y = self.y + self.deslocY
-
 	def exploding(self):
 		if(self._explosion_time > 0):
 			self._explosion_time = self._explosion_time - 1
@@ -139,6 +130,15 @@ class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistenci
 	def Attack(self):
 		print "FastShip attack!"
 
+	def Move(self):
+		if(self.x < PLANET_EARTH_POSX):
+			self.x = MAXX-10
+		if self.y < 10 or self.y > MAXY-10:
+			self.deslocY = - self.deslocY
+
+		self.x = self.x - 4
+		self.y = self.y + self.deslocY
+
 	def ResetStats(self):
 		super(FastShip, self).ResetStats(MAXX, randrange(MAXY), randrange(20), self._armor+1, self.deslocX-0.3, self.deslocY)
 		#self._x = MAXX
@@ -160,6 +160,15 @@ class WarShip(Ship):		#Mais resistentes das naves, porem seu ataque nao eh tao f
 	def Attack(self):
 		print "WarShip attack!"
 
+	def Move(self):
+		if(self.x < PLANET_EARTH_POSX):
+			self.x = MAXX-10
+		if self.y < 10 or self.y > MAXY-10:
+			self.deslocY = - self.deslocY
+
+		self.x = self.x - 2
+		self.y = self.y + self.deslocY
+
 	def ResetStats(self):
 		super(WarShip, self).ResetStats(MAXX, randrange(MAXY), randrange(20), self._armor+1, self.deslocX-0.3, self.deslocY)
 		#self._x = MAXX
@@ -177,6 +186,15 @@ class DestroyerShip(Ship):	#Tem o ataque mais potente, porem nao sao tao rapidas
 
 	def Attack(self):
 		print "DestroyerShip attack!"
+
+	def Move(self):
+		if(self.x < PLANET_EARTH_POSX):
+			self.x = MAXX-10
+		if self.y < 10 or self.y > MAXY-10:
+			self.deslocY = - self.deslocY
+
+		self.x = self.x - 0.9
+		self.y = self.y + self.deslocY
 
 	def ResetStats(self):
 		super(DestroyerShip, self).ResetStats(MAXX, randrange(MAXY), randrange(20), self._armor+1, self.deslocX-0.3, self.deslocY)
