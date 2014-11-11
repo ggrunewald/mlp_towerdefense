@@ -5,6 +5,7 @@ from random import randrange
 
 from defines.definitions import *
 from classes.entity import *
+from classes.explosion import *
 
 import random
 #Classe abstrata Inimigos
@@ -28,6 +29,7 @@ class Ship(Entity):
 			self._damage = d
 
 		super(Ship, self).__init__(MAXX, randrange(MAXY))
+
 
 	@abstractmethod
 	def Attack(self):
@@ -107,7 +109,6 @@ class Ship(Entity):
 
 	def get_explosion_coordinate(self):
 		return self._explosion_x, self._explosion_y
-
 
 #Classes especificas Inimigas
 class FastShip(Ship):		#Mais rapidas porem com ataque medio e a menor resistencia de todas
