@@ -55,6 +55,7 @@ player = Player()
 scoreFont = pygame.font.SysFont("purisa", 30, bold=True)
 moneyFont = pygame.font.SysFont("purisa", 30, bold=True)
 
+menu_enemy = []
 
 #################################################
 # FUNCOES PARA IMPRIMIR ANIMACAO NO MENU INICIAL#
@@ -76,23 +77,41 @@ def change_position(enemy):
 	surface.blit(enemy.image, (enemy.x, enemy.y))
 	return [enemy]
 
+def initiate_enemy_menu_list(war_quantity):
+	def initiate_enemy_menu_list_fast(fast_quantity):
+		def initiate_enemy_menu_list_destroyer(destroyer_quantity):
+			print str(war_quantity) +" "+ str(fast_quantity) + " " + str(destroyer_quantity)
+			w_enemy = [WarShip() for i in range(war_quantity)]
+			f_enemy = [FastShip() for i in range(fast_quantity)]
+			d_enemy = [DestroyerShip() for i in range(destroyer_quantity)]
+			enemy = w_enemy+f_enemy+d_enemy
+			for i in enemy:
+				i.ResetStats()
+				menu_enemy.insert(0,i)
+		return initiate_enemy_menu_list_destroyer
+	return initiate_enemy_menu_list_fast
 
-w_enemy = [WarShip() for i in range(4)]
-f_enemy = [FastShip() for i in range(5)]
-d_enemy = [DestroyerShip() for i in range(3)]
-enemies = w_enemy+f_enemy+d_enemy
-for i in enemies:
-	i.ResetStats()
 
+
+
+
+
+
+initiate_enemy_menu_list(4)(5)(6)
 #												#
 #												#
 #################################################
+
+print str(len(menu_enemy))
+print str(len(menu_enemy))
+print str(len(menu_enemy))
+print str(len(menu_enemy))
 
 while menuContinue:											#loop do menu
 
 	surface.blit(space, (0, 0))
 	surface.blit(earth, (-300, 20))
-	enemies = animate_menu(change_position, enemies)
+	menu_enemy = animate_menu(change_position, menu_enemy)
 	menu.draw()
 	pygame.display.update()
 
