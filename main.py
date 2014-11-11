@@ -78,7 +78,6 @@ def change_position(enemy):
 def initiate_enemy_menu_list(war_quantity):
 	def initiate_enemy_menu_list_fast(fast_quantity):
 		def initiate_enemy_menu_list_destroyer(destroyer_quantity):
-			print str(war_quantity) +" "+ str(fast_quantity) + " " + str(destroyer_quantity)
 			w_enemy = [WarShip() for i in range(war_quantity)]
 			f_enemy = [FastShip() for i in range(fast_quantity)]
 			d_enemy = [DestroyerShip() for i in range(destroyer_quantity)]
