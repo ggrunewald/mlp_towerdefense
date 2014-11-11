@@ -54,6 +54,14 @@ class Player(object):
 			return
 
 	@property
+	def money(self):
+	    return self._money
+	@money.setter
+	def money(self, value):
+	    self._money = value
+	
+
+	@property
 	def score(self):
 	    return self._score
 	@score.setter
@@ -63,11 +71,17 @@ class Player(object):
 	def buy_tower(self):
 			self._money = self._money - 1
 
+	def sell_tower(self):
+			self._money = self._money + 1
+
 	def have_money(self):
 		if(self._money > 0):
 			return True
 		else:
 			return False
+
+	def profit(self):
+		self._money = self._money+1
 
 	def get_money(self):
 		return self._money
@@ -79,6 +93,9 @@ class Player(object):
 		elif (self._hp < 60 and self._hp > 40):
 			return YELLOW
 		elif(self._hp < 40):
-			return RED
+			return (255,0,0)
+
+	def lose_score(self):
+		self._score = self._score-1
 	
 	

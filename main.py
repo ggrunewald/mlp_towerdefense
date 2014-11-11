@@ -9,6 +9,7 @@ from classes.enemy import *			#importa modulo da classe jogador
 from classes.tower import *
 from classes.bullet import *
 from classes.entity import *
+from classes.explosion import *
 
 from defines.colors import *		#importa definicoes de cores
 from defines.difficulties import *	#importa definicoes de niveis de dificuldades
@@ -16,6 +17,7 @@ from defines.definitions import *	#importa outras definicoes
 
 from menu.menu import *				#importa o modulo de menu
 from menu.inputbox import *			#importa modulo de caixa de texto
+
 import random
 
 
@@ -32,10 +34,13 @@ pygame.display.set_caption("Earth Defense")					#muda o nome na barra da janela
 ######################################
 space = pygame.image.load("images/space.jpg")
 earth = pygame.image.load("images/earth.png")
-towers = pygame.image.load("images/player.png")
-bullet = pygame.image.load("images/ball.png")
+towers = pygame.image.load("images/human.png")
+bullet = pygame.image.load("images/ball2.png")
 lifebar = pygame.image.load("images/lifebar.png")
-
+fast_ship_explosion_image = pygame.image.load("images/expl1.png")
+war_ship_explosion_image = pygame.image.load("images/expl2.png")
+destroyer_ship_explosion_image = pygame.image.load("images/expl3.png") 
+coin = pygame.image.load("images/coin.png") 
 
 surface.fill(BLACK)
 menu = Menu()
@@ -51,9 +56,43 @@ scoreFont = pygame.font.SysFont("purisa", 30, bold=True)
 moneyFont = pygame.font.SysFont("purisa", 30, bold=True)
 
 
+#################################################
+# FUNCOES PARA IMPRIMIR ANIMACAO NO MENU INICIAL#
+#################################################
+#												#
+#												#
+
+#Usa recursao com funcao de maior ordem
+def animate_menu(fun, e_list):
+	if len(e_list) == 0:
+		return []
+	else:
+		return fun(e_list[0]) + animate_menu(fun, e_list[1:])
+
+
+
+def change_position(enemy):
+	enemy.Move()
+	surface.blit(enemy.image, (enemy.x, enemy.y))
+	return [enemy]
+
+
+w_enemy = [WarShip() for i in range(4)]
+f_enemy = [FastShip() for i in range(5)]
+d_enemy = [DestroyerShip() for i in range(3)]
+enemies = w_enemy+f_enemy+d_enemy
+for i in enemies:
+	i.ResetStats()
+
+#												#
+#												#
+#################################################
+
 while menuContinue:											#loop do menu
 
 	surface.blit(space, (0, 0))
+	surface.blit(earth, (-300, 20))
+	enemies = animate_menu(change_position, enemies)
 	menu.draw()
 	pygame.display.update()
 
@@ -101,6 +140,14 @@ pauseMenu.init(['Paused', 'Resume', 'Exit'], surface)
 #################################################################################
 #FUNCAO PARA IMPRIMIR AS TORRES CRIADAS E ATIRAR NO INIMIGO
 #NAO SABIA ONDE MELHOR BOTAR...BOTEI AQUI.
+def draw_explosion(enemy):
+	if(  type(enemy) is FastShip):
+		surface.blit(fast_ship_explosion_image, enemy.get_explosion_coordinate())
+	elif(type(enemy) is WarShip):
+		surface.blit(war_ship_explosion_image, enemy.get_explosion_coordinate())
+	elif(type(enemy) is DestroyerShip):
+		surface.blit(destroyer_ship_explosion_image, enemy.get_explosion_coordinate())
+
 def attack_enemy(a_tower):
 	surface.blit(towers, (a_tower.x, a_tower.y))
 	
@@ -142,13 +189,17 @@ def attack_enemy(a_tower):
 						a_tower.stop_shoot() #Torre acertou o inimigo, por isso, mesmo projetil nao continua trajetoria na tela
 						if(enemy.hp <= 0):
 							#Morreu
+							enemy.self_destruct()
 							enemy.ResetStats()
 							###enemyList.remove(enemy)    #Agora inimigos sempre revivem   
 							player.score=player.score+1	#Contabiliza pontos para jogador	
 			elif(enemy.hp <= 0): #Repete a verificacao da morte do inimigo pq outras torres podem ter destruido
 				#Morreu
+				enemy.self_destruc()
 				enemy.ResetStats()
 				##enemyList.remove(enemy)   #Agora inimigos sempre revivem
+			if(enemy.exploding()):	
+				draw_explosion(enemy)
 
 
 def move_enemy(a_enemy):
@@ -156,7 +207,11 @@ def move_enemy(a_enemy):
 	if a_enemy.x !=0 and a_enemy.x < PLANET_EARTH_POSX:
 		player.hp = player.hp - a_enemy.damage
 		print "EXPLODE! Vida restante:" + str(player.hp)
-	a_enemy.Move()
+	if(a_enemy.delay <= 0):
+		a_enemy.Move()
+	else:
+		a_enemy.delay = a_enemy.delay-1
+
 
 
 def insert_enemies():
@@ -164,14 +219,17 @@ def insert_enemies():
 	enemies = [WarShip() for i in range(player.difficulty*4 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
+		i.delay = randrange(MAX_DELAY)
 		enemyList.insert(0,i)
 	enemies = [FastShip() for i in range(player.difficulty*4 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
+		i.delay = randrange(MAX_DELAY)
 		enemyList.insert(0,i)
 	enemies = [DestroyerShip() for i in range(player.difficulty*3 + 2)]
 	for i in enemies:
 		i.y = random.randrange(1,MAXY)
+		i.delay = randrange(MAX_DELAY)
 		enemyList.insert(0,i)
 
 	random.shuffle(enemyList)
@@ -194,7 +252,7 @@ insert_enemies()
 #############################
 #MENU PRINCIPAL DA INTERFACE#
 #############################
-while True:										#loop principal
+while player.hp > 0:										#loop principal
 
 	surface.blit(space, (0, 0))
 	surface.blit(earth, (-300, 20))
@@ -210,20 +268,30 @@ while True:										#loop principal
 	#APLICA AS FUNCOES MAP#
 	#######################
 	#Atualiza projetil para todas as torres
+	#map(attack_earth, enemyList)
 	map(attack_enemy, towerList)
 	#Imprime inimigos
-	map(move_enemy, enemyList)
+	#map(lambda a_enemy: a_enemy.Move(), enemyList)
+
+ 	map(lambda a_enemy: move_enemy(a_enemy), enemyList)
+
 
 	##################################
 	#DESENHA BARRA DA VIDA DO JOGADOR#
 	##################################
-	pygame.draw.rect(surface, player.get_hp_status(), [10, 600, 10+ player.hp*2, 14])
+	pygame.draw.rect(surface, BLACK, [7, 597, 10+ 205, 20])
+	#pygame.draw.rect(surface, player.get_hp_status(), [10, 600, 10+ player.hp*2, 14])
+	pygame.draw.rect(surface, GREEN, [10, 600, 10+ player.hp*2, 14])
 
 	###################################################
 	#IMPRIME LABEL COM OS PONTOS E DINHEIRO DO JOGADOR#
 	###################################################
 	surface.blit(scoreFont.render(str(player.score) + " Points", 0, WHITE), (12, 8))
 	surface.blit(moneyFont.render(str(player.get_money()) + " Money", 0, YELLOW), (875, 8))
+
+
+	if(player.score >= 10):
+		surface.blit(coin, (185, 15))
 
 	pygame.display.update()
 
@@ -263,30 +331,43 @@ while True:										#loop principal
 					pygame.display.update()
 
 		if event.type == MOUSEBUTTONDOWN:
-			if(player.have_money() is True):
 				#Pega as coordenadas do mouse
 				mouseX, mouseY = pygame.mouse.get_pos()
+				print str(mouseX) + "   " + str(mouseY)
 				#Cria nova torre na poiscao do mouse
 				#Se nao tem nenhuma torre nos vizinhos...
-				if towerList == []:
-					new_tower = tower(mouseX, mouseY)
-					print str(mouseX) + "   " + str(mouseY)
-					#Adiciona torre na lista de torre
-					player.buy_tower()
-					towerList.insert(0, new_tower)	
-
-				adiciona = 1
-				for elem in towerList:
-					if mouseX > elem.x + 27 or mouseX < elem.x - 27 or mouseY > elem.y + 47 or mouseY < elem.y - 47:
+				if(mouseX > PLANET_EARTH_POSX):
+					if towerList == []:
 						new_tower = tower(mouseX, mouseY)
-						#if(player.buy_tower() is True):
-						adiciona = adiciona*1
-
+						print str(mouseX) + "   " + str(mouseY)
+						#Adiciona torre na lista de torre
+						player.buy_tower()
+						towerList.insert(0, new_tower)	
 					else:
-						adiciona = 0
+						adiciona = 1
+						for elem in towerList:
+							if mouseX > elem.x + 27 or mouseX < elem.x - 27 or mouseY > elem.y + 47 or mouseY < elem.y - 47:
+								new_tower = tower(mouseX, mouseY)
+								#if(player.buy_tower() is True):
+								adiciona = adiciona*1
 
-				if(adiciona == 1):
-					player.buy_tower()
-					print str(mouseX) + "   " + str(mouseY)
-					#Adiciona torre na lista de torre
-					towerList.insert(0, new_tower)
+							else:
+								adiciona = 0
+								#Remove torre!
+								player.lose_score()
+								player.sell_tower()
+								towerList.remove(elem)
+
+						if(adiciona == 1):
+							if(player.have_money() is True):
+								player.buy_tower()
+								print str(mouseX) + "   " + str(mouseY)
+								#Adiciona torre na lista de torre
+								towerList.insert(0, new_tower)
+				elif(mouseY > 10 and mouseY < 50):
+					if(mouseX > 180):
+						if(player.score >=10):
+							#Converter para moeda
+							player.score = player.score -10
+							player.money = player.money + 1
+
