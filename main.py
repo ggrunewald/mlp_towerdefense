@@ -20,8 +20,6 @@ from menu.inputbox import *			#importa modulo de caixa de texto
 
 import random
 
-
-
 pygame.init()					#inicializa modulos importados
 
 surface = pygame.display.set_mode((MAXX, MAXY))	#abre a janela e cria um objeto surface que eh retornado pra variavel surface
@@ -207,6 +205,7 @@ def move_enemy(a_enemy):
 	if a_enemy.x !=0 and a_enemy.x < PLANET_EARTH_POSX:
 		player.hp = player.hp - a_enemy.damage
 		print "EXPLODE! Vida restante:" + str(player.hp)
+		a_enemy.Attack()
 	if(a_enemy.delay <= 0):
 		a_enemy.Move()
 	else:
